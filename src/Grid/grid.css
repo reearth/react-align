@@ -1,0 +1,71 @@
+/* Wrapper styles */
+.wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.vertical {
+    flex-direction: column;
+}
+
+.vertical-r {
+    flex-direction: column-reverse;
+}
+
+/* Section styles */
+.section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 120px;
+    border: 1px solid white;
+}
+
+.middle {
+    flex-grow: 0;
+    flex: auto;
+}
+
+/* Area styles */
+.area {
+    width: 100%;
+    min-height: inherit;
+    border: 1px solid red;
+    display: flex;
+    flex: 1;
+    /* flex-wrap: wrap; */
+    justify-content: start;
+}
+
+.centered {
+    flex-grow: 0;
+    justify-content: center;
+}
+
+.horizontal {
+    flex-direction: row;
+}
+
+.horizontal-r {
+    flex-direction: row-reverse;
+}
+
+.bottom {
+    justify-content: end;
+    align-items:flex-end;
+}
+
+/* Item styles */
+.item {
+    width: 100%;
+    height: 75px;
+    border: 1px solid green;
+    background: #3B3CD0;
+    color: white;
+}
+
+.expanded {
+    height: 100%;
+}

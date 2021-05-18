@@ -5,6 +5,8 @@ import replace from "@rollup/plugin-replace";
 import { terser } from "rollup-plugin-terser";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import cleanup from "rollup-plugin-cleanup";
+import del from "rollup-plugin-delete";
+import postcss from "rollup-plugin-postcss";
 
 import pkg from "./package.json";
 
@@ -12,23 +14,30 @@ const env = process.env.NODE_ENV;
 
 export default {
   input: "./src/index.ts",
-  output: {
-    format: ["es", "cjs"].indexOf(env) >= 0 ? env : "umd",
-    file:
-      env === "es"
-        ? pkg.module
-        : env === "cjs"
-        ? pkg.main
-        : `dist/realign${env === "production" ? ".min" : ""}.js`,
-    globals: {
-      react: "React",
-      "react-dom": "ReactDOM",
-      "react-dom/server.browser": "ReactDOMServer",
+  output: [
+    {
+      format: ["es", "cjs"].indexOf(env) >= 0 ? env : "umd",
+      file:
+        env === "es"
+          ? pkg.module
+          : env === "cjs"
+            ? pkg.main
+            : `dist/realign${env === "production" ? ".min" : ""}.js`,
+      globals: {
+        react: "React",
+        "react-dom": "ReactDOM",
+        "react-dom/server.browser": "ReactDOMServer",
+      },
+      name: "ReAlign",
+      sourcemap: true,
     },
-    name: "ReAlign",
-    sourcemap: true,
-  },
+    {
+      file: "playground/src/component-lib/index.js",
+      format: "esm",
+      banner: "/* eslint-disable */"
+    }],
   plugins: [
+    postcss(),
     typescript({
       tsconfigOverride: {
         compilerOptions: {
@@ -48,6 +57,7 @@ export default {
         "./__mocks__/**/*",
       ],
     }),
+    del({ targets: ["dist/*", "playground/src/component-lib"] }),
     resolve(),
     commonjs(),
     sourcemaps(),
@@ -57,11 +67,11 @@ export default {
     }),
     ...(env === "production"
       ? [
-          replace({
-            "process.env.NODE_ENV": JSON.stringify("production"),
-          }),
-          terser(),
-        ]
+        replace({
+          "process.env.NODE_ENV": JSON.stringify("production"),
+        }),
+        terser(),
+      ]
       : []),
   ],
   external: [...Object.keys(pkg.peerDependencies || {}), "react-dom/server.browser"],

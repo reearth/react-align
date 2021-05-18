@@ -2,3 +2,6 @@ node_modules
 /dist
 /.cache
 .DS_STORE
+
+# Might/probably open up later
+playground 
