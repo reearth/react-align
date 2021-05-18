@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "module": "es2015",
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "pretty": true,
+    "rootDir": ".",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es5",
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@realign/*": [
+        "src/*"
+      ],
+      "*": [
+        "src/types/*"
+      ],
+      "assets": [
+        ".storybook/assets/*"
+      ]
+    }
+  }
+}
