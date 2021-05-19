@@ -5,7 +5,7 @@ import replace from "@rollup/plugin-replace";
 import { terser } from "rollup-plugin-terser";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import cleanup from "rollup-plugin-cleanup";
-import del from "rollup-plugin-delete";
+// import del from "rollup-plugin-delete";
 import postcss from "rollup-plugin-postcss";
 
 import pkg from "./package.json";
@@ -13,7 +13,7 @@ import pkg from "./package.json";
 const env = process.env.NODE_ENV;
 
 export default {
-  input: "./src/index.ts",
+  input: "src/index.ts",
   output: [
     {
       format: ["es", "cjs"].indexOf(env) >= 0 ? env : "umd",
@@ -37,8 +37,10 @@ export default {
       banner: "/* eslint-disable */"
     }],
   plugins: [
+    // del({ targets: ["dist/*", "playground/src/component-lib"] }),
     postcss(),
     typescript({
+      typescript: require('typescript'),
       tsconfigOverride: {
         compilerOptions: {
           declaration: env === "es", // only compile defs in es format
@@ -57,7 +59,6 @@ export default {
         "./__mocks__/**/*",
       ],
     }),
-    del({ targets: ["dist/*", "playground/src/component-lib"] }),
     resolve(),
     commonjs(),
     sourcemaps(),

@@ -18,6 +18,9 @@
     "target": "es5",
     "skipLibCheck": true,
     "baseUrl": ".",
+    "declaration": true,
+    "declarationDir": "./dist",
+    "outDir": "./dist",
     "paths": {
       "@realign/*": [
         "src/*"
@@ -29,5 +32,11 @@
         ".storybook/assets/*"
       ]
     }
-  }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

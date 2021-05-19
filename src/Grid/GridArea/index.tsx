@@ -1,13 +1,13 @@
 import React from "react";
 import "../grid.css";
 
-export type Props = {
+export type AreaProps = {
     vertical?: boolean;
     reverse?: boolean;
     end?: boolean;
 }
 
-const GridArea: React.FC<Props> = ({
+const GridArea: React.FC<AreaProps> = ({
     vertical,
     children,
     reverse,

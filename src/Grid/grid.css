@@ -1,7 +1,6 @@
 /* Wrapper styles */
 .wrapper {
     height: 100%;
-    width: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -14,12 +13,15 @@
     flex-direction: column-reverse;
 }
 
+.stretch {
+    flex: auto;
+}
 /* Section styles */
 .section {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: 120px;
+    min-width: 50px;
     border: 1px solid white;
 }
 
@@ -30,13 +32,14 @@
 
 /* Area styles */
 .area {
-    width: 100%;
-    min-height: inherit;
+    /* width: inherit; */
+    /* min-height: inherit; */
     border: 1px solid red;
-    display: flex;
-    flex: 1;
+    /* display: flex; */
+    /* flex: 1; */
     /* flex-wrap: wrap; */
-    justify-content: start;
+    /* justify-content: start; */
+    /* background: orange; */
 }
 
 .centered {
@@ -59,13 +62,17 @@
 
 /* Item styles */
 .item {
-    width: 100%;
-    height: 75px;
+    /* width: 100%; */
+    /* height: 75px; */
     border: 1px solid green;
     background: #3B3CD0;
     color: white;
 }
 
-.expanded {
+.expanded-v {
     height: 100%;
+}
+
+.expanded-h {
+    width: 100%;
 }

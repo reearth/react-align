@@ -1,12 +1,13 @@
 import React from "react";
 import "../grid.css";
 
-export type Props = {
+export type WrapperProps = {
     vertical?: boolean;
+    stretch?: boolean;
 }
 
-const GridWrapper: React.FC<Props> = ({ vertical, children }) => (
-    <div className={`wrapper ${vertical && "vertical"}`}>
+const GridWrapper: React.FC<WrapperProps> = ({ vertical, stretch, children }) => (
+    <div className={`wrapper ${vertical && "vertical"} ${stretch && "stretch"}`}>
         {children}
     </div>
 )

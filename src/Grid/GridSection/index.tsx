@@ -1,11 +1,11 @@
 import React from "react";
 import "../grid.css";
 
-export type Props = {
+export type SectionProps = {
     middle?: boolean;
 }
 
-const GridSection: React.FC<Props> = ({
+const GridSection: React.FC<SectionProps> = ({
     middle,
     children,
 }) => (
