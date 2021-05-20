@@ -1,5 +1,5 @@
 import React from "react";
-import "../grid.css";
+import "../grid.scss";
 
 export type ItemProps = {
     expandV?: boolean;

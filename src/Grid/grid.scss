@@ -67,6 +67,11 @@
     border: 1px solid green;
     background: #3B3CD0;
     color: white;
+    cursor: pointer;
+
+    &:hover{
+        background: #6767e6;
+    }
 }
 
 .expanded-v {

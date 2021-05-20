@@ -16,6 +16,11 @@ export default {
   input: "src/index.ts",
   output: [
     {
+      file: "playground/src/component-lib/index.js",
+      format: "esm",
+      banner: "/* eslint-disable */"
+    },
+    {
       format: ["es", "cjs"].indexOf(env) >= 0 ? env : "umd",
       file:
         env === "es"
@@ -30,11 +35,6 @@ export default {
       },
       name: "ReAlign",
       sourcemap: true,
-    },
-    {
-      file: "playground/src/component-lib/index.js",
-      format: "esm",
-      banner: "/* eslint-disable */"
     }],
   plugins: [
     // del({ targets: ["dist/*", "playground/src/component-lib"] }),
