@@ -1,9 +1,41 @@
-/* Wrapper styles */
+/* Default component styles */
 .wrapper {
     height: 100%;
     display: flex;
     justify-content: space-between;
+    
 }
+
+.section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 50px;
+    margin: 2px; // SHOULD CHANGE OR PUT INTO SECTION PROPS FOR DEV SUPPORT
+    border: 1px solid white;
+}
+
+.area {
+    min-height: 10%;
+    min-width: 10%;
+    border: 1px solid #3b7cd0;
+    box-sizing: border-box;
+    padding: 4px; // SHOULD CHANGE OR PUT INTO SECTION PROPS FOR DEV SUPPORT
+    background: #3b3bd0b9;
+    display: grid;
+}
+
+.item {
+    background: #626266;
+    color: white;
+    cursor: pointer;
+
+    &:hover{
+        background: #6767e6;
+    }
+}
+
+// Variable styles
 
 .vertical {
     flex-direction: column;
@@ -11,40 +43,6 @@
 
 .vertical-r {
     flex-direction: column-reverse;
-}
-
-.stretch {
-    flex: auto;
-}
-/* Section styles */
-.section {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-width: 50px;
-    border: 1px solid white;
-}
-
-.middle {
-    flex-grow: 0;
-    flex: auto;
-}
-
-/* Area styles */
-.area {
-    /* width: inherit; */
-    /* min-height: inherit; */
-    border: 1px solid red;
-    /* display: flex; */
-    /* flex: 1; */
-    /* flex-wrap: wrap; */
-    /* justify-content: start; */
-    /* background: orange; */
-}
-
-.centered {
-    flex-grow: 0;
-    justify-content: center;
 }
 
 .horizontal {
@@ -55,29 +53,33 @@
     flex-direction: row-reverse;
 }
 
-.bottom {
-    justify-content: end;
-    align-items:flex-end;
-}
-
-/* Item styles */
-.item {
-    /* width: 100%; */
-    /* height: 75px; */
-    border: 1px solid green;
-    background: #3B3CD0;
-    color: white;
-    cursor: pointer;
-
-    &:hover{
-        background: #6767e6;
-    }
-}
-
 .expanded-v {
     height: 100%;
 }
 
 .expanded-h {
     width: 100%;
+}
+
+.stretch {
+    flex: auto;
+}
+
+.middle {
+    flex-grow: 0;
+    flex: auto;
+}
+
+.centered {
+    flex-grow: 0;
+    justify-content: center;
+}
+
+.bottom {
+    justify-content: end;
+    align-items:flex-end;
+}
+
+.hide {
+    display: none;
 }
