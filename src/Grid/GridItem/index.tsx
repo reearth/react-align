@@ -1,4 +1,5 @@
 import React from "react";
+import { useDrag, DragSourceMonitor } from "react-dnd";
 import "../grid.scss";
 
 export type ItemProps = {
@@ -13,7 +14,10 @@ export type ItemProps = {
   defaultH?: number;
   x?: number;
   y?: number;
-  //   setDragItem?: React.Dispatch<React.SetStateAction<string | undefined>>;
+};
+
+export const ItemType = {
+  ITEM: "item",
 };
 
 const GridItem: React.FC<ItemProps> = ({
@@ -21,54 +25,26 @@ const GridItem: React.FC<ItemProps> = ({
   id,
   expandV,
   expandH,
-  minH,
-  maxH,
-  minW,
-  maxW,
+  // minH,
+  // maxH,
+  // minW,
+  // maxW,
   x,
   y,
   defaultW,
   defaultH,
-  //   y,
-  //   setDragItem,
 }) => {
-  let timer: NodeJS.Timeout;
-
-  const onDrag = (ev: React.DragEvent<HTMLDivElement>) => {
-    // if (!setDragItem) return;
-
-    const target = ev.target as HTMLDivElement;
-    // var style = window.getComputedStyle(target, null);
-
-    // console.log(target, "EV");
-    // console.log(style.getPropertyValue("top"), "style");
-
-    // ev.dataTransfer.setData("text/plain",
-    //     (parseInt(style.getPropertyValue("left"), 10) - ev.clientX) + ',' + (parseInt(style.getPropertyValue("top"), 10) - ev.clientY));
-
-    // ev.dataTransfer.effectAllowed = "move";
-    ev.dataTransfer.setData("text", target.id);
-    target.style.backgroundColor = "purple";
-    // timer = setTimeout(() => {
-    //     target.classList.add("hide");
-    // }, 500)
-    return false;
-  };
-
-  //   const onMouseDown = (ev: React.DragEvent<HTMLDivElement>) => {
-  //     if (!setDragItem) return;
-  //     // ev.preventDefault();
-  //     setDragItem(id);
-  //   };
-
-  // const onMouseUp = (ev: React.DragEvent<HTMLDivElement>) => {
-  //     alert("HELLO")
-  //     clearTimeout();
-  // }
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: id,
+    collect: (monitor: DragSourceMonitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
 
   return (
     <div
       id={id}
+      ref={drag}
       className={`item ${(expandV && "expanded-v") || (expandH && "expanded-h")}`}
       style={{
         margin: "2px",
@@ -76,18 +52,14 @@ const GridItem: React.FC<ItemProps> = ({
         gridRow: `${y}/ span ${defaultH}`,
         overflow: "hidden",
         whiteSpace: "nowrap",
+        opacity: isDragging ? 0.5 : 1,
         // minWidth: !expandH ? minW + "px" : undefined,
         // width: !expandH ? defaultW : undefined,
         // maxWidth: !expandH ? maxW + "px" : undefined,
         // minHeight: !expandV ? minH + "px" : undefined,
         // height: !expandV ? defaultH : undefined,
         // maxHeight: !expandV ? maxH + "px" : undefined,
-      }}
-      draggable
-      onDragStart={onDrag}
-      //   onMouseDown={onMouseDown}
-      // onMouseUp={onMouseUp}
-    >
+      }}>
       {children}
     </div>
   );

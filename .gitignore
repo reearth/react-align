@@ -1,8 +1,8 @@
+*.log
+.DS_Store
 node_modules
-/dist
-/.cache
-.DS_STORE
+.cache
+dist
 
-# Might/probably open up later
-playground 
-yarn-error.log
+# might add later
+example

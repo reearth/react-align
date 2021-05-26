@@ -2,7 +2,7 @@ import React, { ComponentProps } from "react";
 
 import { Story } from "@storybook/react";
 
-import GridWrapper from "./";
+import GridWrapper from "../src/Grid/GridWrapper";
 
 export default {
   title: "Grid",
