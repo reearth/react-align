@@ -26,8 +26,6 @@ export default () => {
     if (!colSize || !id) return;
 
     const { width } = ElementSize(id);
-    console.log(id);
-    console.log(width);
 
     return Math.round(width / colSize);
   };
