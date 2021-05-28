@@ -12,9 +12,13 @@ export type ItemProps = {
   maxW?: number;
   defaultW?: number;
   defaultH?: number;
-  x?: number;
-  y?: number;
+  // x?: number;
+  // y?: number;
   draggable: boolean;
+  locationName: {section?: string, area?: string};
+  onMove: ( 
+    currentItem: string, dropLocation: { section?: string, area?: string }, originalLocation: { section?: string, area?: string }
+    ) => void;
 };
 
 // MAKE ITEMTYPES GENERIC AND PASSED IN
@@ -35,27 +39,42 @@ const GridItem: React.FC<ItemProps> = ({
   // maxH,
   // minW,
   // maxW,
-  x,
-  y,
+  // x,
+  // y,
   defaultW,
   defaultH,
-  draggable
+  draggable,
+  locationName,
+  onMove
 }) => {
-  const [{ isDragging }, drag] = useDrag(() => ({
+
+  const [{ isDragging, blah }, drag] = useDrag(() => ({
     type: ItemTypes.PLUGIN,
+    item: {id},
     canDrag: draggable,
+    end: (item, monitor) =>{
+      const dropResults: {dropEffect: string, area: {section?: string, area?: string}} | null = monitor.getDropResult();
+      console.log(dropResults, "RESULTS");
+      // console.log(item, "RESULTS item");
+      console.log(blah, "blah getTargetIds");
+      if (!dropResults) return;
+      onMove(item.id, dropResults?.area, locationName)
+    },
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
+      blah: monitor.getTargetIds()
     }),
   }));
 
   const containerStyle: CSSProperties = useMemo(
     () => ({
       margin: "2px",
-      gridColumn: `${x}/ span ${defaultW}`,
-      gridRow: `${y}/ span ${defaultH}`,
-      overflow: "hidden",
-      whiteSpace: "nowrap",
+      // gridColumn: `${x}/ span ${defaultW}`,
+      // gridRow: `${y}/ span ${defaultH}`,
+      // overflow: "hidden",
+      // whiteSpace: "nowrap",
+      width: defaultW + "px",
+      height: defaultH + "px",
       opacity: isDragging ? 0.5 : 1,
     }),
     [isDragging],

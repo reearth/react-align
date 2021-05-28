@@ -4,48 +4,53 @@ import "../grid.scss";
 
 import {DragItem} from "../interfaces";
 import {ItemTypes} from "../GridItem";
-import useHooks from "./hooks";
+// import useHooks from "./hooks";
 
 export type AreaProps = {
   id: string;
-  locationName?: {section?: string, area?: string};
   vertical?: boolean;
   reverse?: boolean;
   end?: boolean;
-  cols?: number;
-  colSize?: number;
-  rowSize?: number;
+  align?: string;
+  locationName: {section?: string, area?: string};
+  // onMove: (currentItem: string, area:{section?: string, area?: string}) => void;
 };
 
 const GridArea: React.FC<AreaProps> = ({
   id,
-  locationName,
   vertical,
   children,
   reverse,
   end,
-  cols,
-  colSize = 24,
-  rowSize = 24,
+  // align,
+  locationName,
+  // onMove
 }) => {
-  const { CalculateColumns } = useHooks();
+  // const { CalculateColumns } = useHooks();
 
   const [lastDroppedColor, setLastDroppedColor] = useState<string | null>(null)
   const handleDrop = useCallback(
     (item: any) => {
       setLastDroppedColor(item);
-      console.log(locationName);
+      // console.log(locationName, "location name passed prop");
     },
     [],
   )
 
   const [{isOver, draggingItem}, drop] = useDrop(()=>({
     accept: [ItemTypes.PLUGIN, ItemTypes.GROUP],
-    drop(_item: DragItem, monitor) {
+    drop(item: DragItem, monitor) {
       handleDrop(monitor.getItemType())
-      alert(monitor.getItemType())
-      return undefined
+      // console.log(monitor.getDropResult(), "getDropResult")
+      console.log(item, "item")
+      console.log(monitor.didDrop(), "didDrop")
+      // console.log(id, "THIS IS THE DROPPED AREAS ID")
+
+      // onMove(item.id, locationName);
+      return {area: locationName}
     },
+    // drop: () =>({name: "harhar"}),
+    // collect might be unnecessary
     collect: (monitor: DropTargetMonitor) => ({
       isOver: monitor.isOver(),
       // canDrop: monitor.canDrop(),
@@ -54,14 +59,6 @@ const GridArea: React.FC<AreaProps> = ({
   }),
   [handleDrop]
   );
-
-  //   ---------------------------------
-  // NEED TO GET MIDDLE WORKING!!!! TBD
-  // NEED TO GET MIDDLE WORKING!!!! TBD
-  // NEED TO GET MIDDLE WORKING!!!! TBD
-  // NEED TO GET MIDDLE WORKING!!!! TBD
-  //   const [columns, setColumns] = useState(cols);
-  const columns = CalculateColumns(cols, colSize, id);
 
   return (
     <div
@@ -80,10 +77,7 @@ const GridArea: React.FC<AreaProps> = ({
             }
             `}
       style={{
-        gridTemplateColumns: `repeat(${columns}, ${colSize + "px"})`,
-        // gridAutoColumns: colSize + "px",
-        gridAutoRows: rowSize + "px",
-        background: draggingItem ? "red" : undefined,
+        background: draggingItem ? "#3b3bd0" : undefined,
         opacity: isOver ? 1 : 0.7
       }}>
       {children}

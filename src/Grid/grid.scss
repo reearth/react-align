@@ -3,7 +3,7 @@
     height: 100%;
     display: flex;
     justify-content: space-between;
-    border: 1px solid white;
+    // border: 1px solid white;
 }
 
 .section {
@@ -12,26 +12,31 @@
     justify-content: space-between;
     min-width: 50px;
     margin: 2px; // SHOULD CHANGE OR PUT INTO SECTION PROPS FOR DEV SUPPORT
-    border: 1px solid white;
+    // border: 1px solid white;
 }
 
 .area {
-    min-height: 10%;
+    min-height: 20px;
     min-width: 10%;
     border: 1px solid #3b7cd0;
+    border-radius: 5px;
     box-sizing: border-box;
     padding: 4px; // SHOULD CHANGE OR PUT INTO SECTION PROPS FOR DEV SUPPORT
     background: #3b3bd0b9;
-    display: grid;
+    display: flex;
+    justify-content: start;
 }
 
 .item {
-    background: #626266;
+    background: #E95518;
+    border: 1px solid #f17d4a;
+    border-radius: 5px;
+    padding: 4px;
     color: white;
     cursor: pointer;
 
     &:hover{
-        background: #6767e6;
+        background: #ec7948;
     }
 }
 
