@@ -1,9 +1,11 @@
-import React, {useMemo, CSSProperties} from "react";
-import { useDrag, DragSourceMonitor } from "react-dnd";
+import React, { useMemo, useRef, CSSProperties } from "react";
+import { useDrag, useDrop, DragSourceMonitor, DropTargetMonitor } from "react-dnd";
+import { DragItem } from "../interfaces";
 import "../grid.scss";
 
 export type ItemProps = {
   id: string;
+  index: number;
   expandV?: boolean;
   expandH?: boolean;
   minH?: number;
@@ -15,10 +17,14 @@ export type ItemProps = {
   // x?: number;
   // y?: number;
   draggable: boolean;
-  locationName: {section?: string, area?: string};
-  onMove: ( 
-    currentItem: string, dropLocation: { section?: string, area?: string }, originalLocation: { section?: string, area?: string }
-    ) => void;
+  locationName: { section?: string, area?: string };
+  onMove: (
+    currentItem?: string,
+    currentIndex?: number,
+    hoverIndex?: number,
+    dropLocation?: { section?: string, area?: string },
+    originalLocation?: { section?: string, area?: string }
+  ) => void;
 };
 
 // MAKE ITEMTYPES GENERIC AND PASSED IN
@@ -33,6 +39,7 @@ export const ItemTypes = {
 const GridItem: React.FC<ItemProps> = ({
   children,
   id,
+  index,
   expandV,
   expandH,
   // minH,
@@ -47,32 +54,69 @@ const GridItem: React.FC<ItemProps> = ({
   locationName,
   onMove
 }) => {
+  const ref = useRef<HTMLDivElement>(null)
 
-  const [{ isDragging, blah }, drag] = useDrag(() => ({
+  const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.PLUGIN,
-    item: {id},
+    item: { id, index },
     canDrag: draggable,
-    end: (item, monitor) =>{
-      const dropResults: {dropEffect: string, area: {section?: string, area?: string}} | null = monitor.getDropResult();
-      console.log(dropResults, "RESULTS");
-      // console.log(item, "RESULTS item");
-      console.log(blah, "blah getTargetIds");
-      if (!dropResults) return;
-      onMove(item.id, dropResults?.area, locationName)
+    end: (item, monitor) => {
+      const dropResults: { dropEffect: string, area: { section?: string, area?: string } } | null = monitor.getDropResult();
+
+      if (!dropResults?.area) return;
+      onMove(item.id, undefined, undefined, dropResults.area, locationName)
     },
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
-      blah: monitor.getTargetIds()
+      // blah: monitor.getTargetIds()
     }),
   }));
+
+  const [, drop] = useDrop({
+    accept: [ItemTypes.PLUGIN, ItemTypes.GROUP],
+    hover(item: DragItem, monitor: DropTargetMonitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      // Don't replace items with themselves
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      // Determine rectangle on screen
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      // Get vertical middle
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset();
+      if (!clientOffset) return;
+      // Get pixels to the top
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      // Only perform the move when the mouse has crossed half of the items height
+      // When dragging downwards, only move when the cursor is below 50%
+      // When dragging upwards, only move when the cursor is above 50%
+      // Dragging downwards
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+      // Dragging upwards
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+      // Time to actually perform the action
+      onMove(item.id, dragIndex, hoverIndex, undefined, locationName);
+
+      item.index = hoverIndex;
+    },
+  });
+
+  drag(drop(ref))
 
   const containerStyle: CSSProperties = useMemo(
     () => ({
       margin: "2px",
-      // gridColumn: `${x}/ span ${defaultW}`,
-      // gridRow: `${y}/ span ${defaultH}`,
-      // overflow: "hidden",
-      // whiteSpace: "nowrap",
       width: defaultW + "px",
       height: defaultH + "px",
       opacity: isDragging ? 0.5 : 1,
@@ -83,7 +127,7 @@ const GridItem: React.FC<ItemProps> = ({
   return (
     <div
       id={id}
-      ref={drag}
+      ref={ref}
       className={`item ${(expandV && "expanded-v") || (expandH && "expanded-h")}`}
       style={containerStyle}>
       {children}

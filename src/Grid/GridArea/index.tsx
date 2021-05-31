@@ -1,9 +1,9 @@
-import React, {useCallback, useState} from "react";
-import {useDrop, DropTargetMonitor} from "react-dnd";
+import React, { useCallback, useState } from "react";
+import { useDrop, DropTargetMonitor } from "react-dnd";
 import "../grid.scss";
 
-import {DragItem} from "../interfaces";
-import {ItemTypes} from "../GridItem";
+import { DragItem } from "../interfaces";
+import { ItemTypes } from "../GridItem";
 // import useHooks from "./hooks";
 
 export type AreaProps = {
@@ -12,7 +12,7 @@ export type AreaProps = {
   reverse?: boolean;
   end?: boolean;
   align?: string;
-  locationName: {section?: string, area?: string};
+  locationName: { section?: string, area?: string };
   // onMove: (currentItem: string, area:{section?: string, area?: string}) => void;
 };
 
@@ -28,28 +28,28 @@ const GridArea: React.FC<AreaProps> = ({
 }) => {
   // const { CalculateColumns } = useHooks();
 
+  // DO I NEED ANYTHING LIKE THIS HERE BELOW????
+  // DO I NEED ANYTHING LIKE THIS HERE BELOW????
+  // DO I NEED ANYTHING LIKE THIS HERE BELOW????
+  // DO I NEED ANYTHING LIKE THIS HERE BELOW????
+  // DO I NEED ANYTHING LIKE THIS HERE BELOW????
   const [lastDroppedColor, setLastDroppedColor] = useState<string | null>(null)
   const handleDrop = useCallback(
     (item: any) => {
       setLastDroppedColor(item);
-      // console.log(locationName, "location name passed prop");
     },
     [],
   )
 
-  const [{isOver, draggingItem}, drop] = useDrop(()=>({
+  const [{ isOver, draggingItem }, drop] = useDrop(() => ({
     accept: [ItemTypes.PLUGIN, ItemTypes.GROUP],
-    drop(item: DragItem, monitor) {
+    drop(_item: DragItem, monitor) {
       handleDrop(monitor.getItemType())
-      // console.log(monitor.getDropResult(), "getDropResult")
-      console.log(item, "item")
-      console.log(monitor.didDrop(), "didDrop")
-      // console.log(id, "THIS IS THE DROPPED AREAS ID")
-
       // onMove(item.id, locationName);
-      return {area: locationName}
+      return { area: locationName }
     },
     // drop: () =>({name: "harhar"}),
+
     // collect might be unnecessary
     collect: (monitor: DropTargetMonitor) => ({
       isOver: monitor.isOver(),
@@ -57,7 +57,7 @@ const GridArea: React.FC<AreaProps> = ({
       draggingItem: monitor.getItemType() as string,
     }),
   }),
-  [handleDrop]
+    [handleDrop]
   );
 
   return (
@@ -66,15 +66,14 @@ const GridArea: React.FC<AreaProps> = ({
       ref={drop}
       data-color={lastDroppedColor || 'none'}
       className={`area ${end && "bottom"}
-            ${
-              vertical
-                ? reverse
-                  ? "vertical-r"
-                  : "vertical"
-                : reverse
-                ? "horizontal-r"
-                : "horizontal"
-            }
+            ${vertical
+          ? reverse
+            ? "vertical-r"
+            : "vertical"
+          : reverse
+            ? "horizontal-r"
+            : "horizontal"
+        }
             `}
       style={{
         background: draggingItem ? "#3b3bd0" : undefined,
