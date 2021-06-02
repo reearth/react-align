@@ -21,7 +21,7 @@
     border: 1px solid #3b7cd0;
     border-radius: 5px;
     box-sizing: border-box;
-    padding: 4px; // SHOULD CHANGE OR PUT INTO SECTION PROPS FOR DEV SUPPORT
+    padding: 8px; // SHOULD CHANGE OR PUT INTO SECTION PROPS FOR DEV SUPPORT
     background: #3b3bd0b9;
     display: flex;
     justify-content: start;
@@ -33,7 +33,6 @@
     border-radius: 5px;
     padding: 4px;
     color: white;
-    cursor: pointer;
 
     &:hover{
         background: #ec7948;

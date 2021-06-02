@@ -1,6 +1,9 @@
-import React, { useMemo, useRef, CSSProperties } from "react";
-import { useDrag, useDrop, DragSourceMonitor, DropTargetMonitor } from "react-dnd";
-import { DragItem } from "../interfaces";
+import React, { useMemo, useRef, CSSProperties, useState } from "react";
+import { useDrag, useDrop, DragSourceMonitor } from "react-dnd";
+// import { DragItem } from "../interfaces";
+
+import Icon from "../../Icon";
+
 import "../grid.scss";
 
 export type ItemProps = {
@@ -12,19 +15,23 @@ export type ItemProps = {
   maxH?: number;
   minW?: number;
   maxW?: number;
-  defaultW?: number;
-  defaultH?: number;
+  defaultW: number;
+  defaultH: number;
   // x?: number;
   // y?: number;
   draggable: boolean;
-  locationName: { section?: string, area?: string };
-  onMove: (
-    currentItem?: string,
+  location: { section?: string, area?: string };
+  onReorder: (
+    originalLocation?: { section?: string, area?: string },
     currentIndex?: number,
-    hoverIndex?: number,
-    dropLocation?: { section?: string, area?: string },
-    originalLocation?: { section?: string, area?: string }
+    hoverIndex?: number
   ) => void;
+  onMoveArea: (
+    currentItem?: string,
+    dropLocation?: { section?: string, area?: string },
+    originalLocation?: { section?: string, area?: string },) => void;
+  // Below are extra customizable parts only for the really picky
+  iconSize?: number;
 };
 
 // MAKE ITEMTYPES GENERIC AND PASSED IN
@@ -51,30 +58,24 @@ const GridItem: React.FC<ItemProps> = ({
   defaultW,
   defaultH,
   draggable,
-  locationName,
-  onMove
+  location,
+  onReorder,
+  onMoveArea,
+  // Picky options
+  iconSize
 }) => {
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null);
+  const [isHovered, setHovered] = useState(false);
 
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: ItemTypes.PLUGIN,
-    item: { id, index },
-    canDrag: draggable,
-    end: (item, monitor) => {
-      const dropResults: { dropEffect: string, area: { section?: string, area?: string } } | null = monitor.getDropResult();
+  const handleExtend = () => {
+    alert("ehy")
+  };
 
-      if (!dropResults?.area) return;
-      onMove(item.id, undefined, undefined, dropResults.area, locationName)
-    },
-    collect: (monitor: DragSourceMonitor) => ({
-      isDragging: monitor.isDragging(),
-      // blah: monitor.getTargetIds()
-    }),
-  }));
 
+  // Drag n drop logic
   const [, drop] = useDrop({
     accept: [ItemTypes.PLUGIN, ItemTypes.GROUP],
-    hover(item: DragItem, monitor: DropTargetMonitor) {
+    hover(item: any, monitor) {
       if (!ref.current) {
         return;
       }
@@ -87,6 +88,7 @@ const GridItem: React.FC<ItemProps> = ({
 
       // Determine rectangle on screen
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      console.log(hoverBoundingRect, "HOVERBOUNDING")
       // Get vertical middle
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       // Determine mouse position
@@ -98,38 +100,85 @@ const GridItem: React.FC<ItemProps> = ({
       // When dragging downwards, only move when the cursor is below 50%
       // When dragging upwards, only move when the cursor is above 50%
       // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      if (hoverClientY < hoverMiddleY) {
         return;
       }
       // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      if (hoverClientY > hoverMiddleY) {
         return;
       }
       // Time to actually perform the action
-      onMove(item.id, dragIndex, hoverIndex, undefined, locationName);
+      onReorder(location, dragIndex, hoverIndex);
 
       item.index = hoverIndex;
     },
   });
 
-  drag(drop(ref))
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.PLUGIN,
+    item: { id, index },
+    canDrag: draggable,
+    end: (item, monitor) => {
+      const dropResults: { dropEffect: string, location: { section?: string, area?: string } } | null = monitor.getDropResult();
 
-  const containerStyle: CSSProperties = useMemo(
+      if (dropResults) {
+        onMoveArea(item.id, dropResults.location, location)
+      }
+    },
+    collect: (monitor: DragSourceMonitor) => ({
+      isDragging: monitor.isDragging(),
+      // blah: monitor.getTargetIds()
+    }),
+  });
+
+  drag(drop(ref));
+
+  const containerStyles: CSSProperties = useMemo(
     () => ({
-      margin: "2px",
-      width: defaultW + "px",
-      height: defaultH + "px",
+      margin: "8px",
+      position: "relative",
+      width: isHovered ? defaultW >= 70 ? defaultW + "px" : "70px" : defaultW + "px",
+      height: isHovered ? defaultH >= 30 ? defaultH + "px" : "30px" : defaultH,
       opacity: isDragging ? 0.5 : 1,
     }),
-    [isDragging],
+    [isDragging, isHovered],
   );
+
+  const overlayStyles: CSSProperties = {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    boxSizing: "border-box",
+    background: "rgba(0,0,0,0.6)",
+    borderRadius: "5px"
+  };
+
+  const buttonStyles: CSSProperties = {
+    display: "flex",
+    alignItems: "start",
+    justifyContent: "space-between",
+    width: "60px",
+    padding: "6px",
+  }
 
   return (
     <div
       id={id}
       ref={ref}
       className={`item ${(expandV && "expanded-v") || (expandH && "expanded-h")}`}
-      style={containerStyle}>
+      style={containerStyles}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}>
+      {isHovered && (
+        <div style={overlayStyles}>
+          <div style={buttonStyles}>
+            <Icon name="moveArrows" size={iconSize} />
+            <Icon name="horizontalExtend" size={iconSize} onClick={handleExtend} />
+          </div>
+        </div>
+      )}
       {children}
     </div>
   );
