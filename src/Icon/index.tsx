@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { css } from "glamor";
 import { ReactSVG } from "react-svg";
 
@@ -10,6 +10,7 @@ export type IconProps = {
     name: string | Icons;
     size?: number;
     onClick?: () => void;
+    style?: CSSProperties;
 }
 
 const IconStyles = (size?: number) => css({
@@ -24,13 +25,14 @@ const IconStyles = (size?: number) => css({
     }
 })
 
-const Icon: React.FC<IconProps> = ({ name, size, onClick }) => {
+const Icon: React.FC<IconProps> = ({ name, size, onClick, style }) => {
     if (typeof name === "string") {
         const LocalIconComponent = Icons[name as Icons];
         if (LocalIconComponent) {
             return (
                 <ReactSVG
                     src={LocalIconComponent}
+                    style={style}
                     {...IconStyles(size)}
                     onClick={onClick}
                 />

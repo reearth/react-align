@@ -1,125 +1,130 @@
 import React, { useMemo, useRef, CSSProperties, useState } from "react";
 import { useDrag, useDrop, DragSourceMonitor } from "react-dnd";
-// import { DragItem } from "../interfaces";
+import { DragItem } from "../interfaces";
 
 import Icon from "../../Icon";
 
 import "../grid.scss";
 
-export type ItemProps = {
+export type Location = { section?: string, area?: string };
+
+export type ItemProps<T extends Location> = {
   id: string;
   index: number;
+  expandable?: boolean;
   expandV?: boolean;
   expandH?: boolean;
-  minH?: number;
-  maxH?: number;
-  minW?: number;
-  maxW?: number;
-  defaultW: number;
-  defaultH: number;
-  // x?: number;
-  // y?: number;
+  minH: number;
+  maxH: number;
+  defaultH?: number;
+  minW: number;
+  maxW: number;
+  defaultW?: number;
   draggable: boolean;
-  location: { section?: string, area?: string };
+  location: T;
   onReorder: (
-    originalLocation?: { section?: string, area?: string },
+    originalLocation?: T,
     currentIndex?: number,
     hoverIndex?: number
   ) => void;
   onMoveArea: (
     currentItem?: string,
-    dropLocation?: { section?: string, area?: string },
-    originalLocation?: { section?: string, area?: string },) => void;
+    dropLocation?: T,
+    originalLocation?: T
+  ) => void;
+  // props passed from parent
+  end?: boolean;
+  vertical?: boolean;
   // Below are extra customizable parts only for the really picky
   iconSize?: number;
 };
 
-// MAKE ITEMTYPES GENERIC AND PASSED IN
-// MAKE ITEMTYPES GENERIC AND PASSED IN
-// MAKE ITEMTYPES GENERIC AND PASSED IN
-// MAKE ITEMTYPES GENERIC AND PASSED IN
 export const ItemTypes = {
-  PLUGIN: "plugin",
+  IT3M: "it3m",
   GROUP: "group"
 };
 
-const GridItem: React.FC<ItemProps> = ({
+const GridItem: React.FC<ItemProps<Location>> = ({
   children,
   id,
   index,
+  expandable,
   expandV,
   expandH,
-  // minH,
-  // maxH,
-  // minW,
-  // maxW,
-  // x,
-  // y,
-  defaultW,
+  minH,
+  maxH,
   defaultH,
+  minW,
+  maxW,
+  defaultW,
   draggable,
   location,
   onReorder,
   onMoveArea,
+  // passed from parent
+  end,
+  vertical,
   // Picky options
   iconSize
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setHovered] = useState(false);
+  const [isExpanded, setExpanded] = useState(false);
 
   const handleExtend = () => {
-    alert("ehy")
+    if (!expandable) return;
+    setExpanded(!isExpanded);
   };
 
-
   // Drag n drop logic
-  const [, drop] = useDrop({
-    accept: [ItemTypes.PLUGIN, ItemTypes.GROUP],
-    hover(item: any, monitor) {
+  const [{ handlerId }, drop] = useDrop({
+    accept: [ItemTypes.IT3M, ItemTypes.GROUP],
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId()
+      };
+    },
+    hover(item: DragItem, monitor) {
       if (!ref.current) {
         return;
       }
       const dragIndex = item.index;
       const hoverIndex = index;
-      // Don't replace items with themselves
+
       if (dragIndex === hoverIndex) {
         return;
       }
 
-      // Determine rectangle on screen
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      console.log(hoverBoundingRect, "HOVERBOUNDING")
-      // Get vertical middle
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      // Determine mouse position
+
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.bottom) / 2;
+
       const clientOffset = monitor.getClientOffset();
       if (!clientOffset) return;
-      // Get pixels to the top
+
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
+
       // Dragging downwards
-      if (hoverClientY < hoverMiddleY) {
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }
       // Dragging upwards
-      if (hoverClientY > hoverMiddleY) {
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-      // Time to actually perform the action
+
       onReorder(location, dragIndex, hoverIndex);
 
       item.index = hoverIndex;
     },
   });
 
-  const [{ isDragging }, drag] = useDrag({
-    type: ItemTypes.PLUGIN,
+  const [{ isDragging }, drag, preview] = useDrag({
+    type: ItemTypes.IT3M,
     item: { id, index },
     canDrag: draggable,
     end: (item, monitor) => {
-      const dropResults: { dropEffect: string, location: { section?: string, area?: string } } | null = monitor.getDropResult();
+      const dropResults: { location: Location } | null = monitor.getDropResult();
 
       if (dropResults) {
         onMoveArea(item.id, dropResults.location, location)
@@ -127,21 +132,24 @@ const GridItem: React.FC<ItemProps> = ({
     },
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
-      // blah: monitor.getTargetIds()
     }),
   });
 
-  drag(drop(ref));
+  preview(drop(ref));
 
   const containerStyles: CSSProperties = useMemo(
     () => ({
       margin: "8px",
       position: "relative",
-      width: isHovered ? defaultW >= 70 ? defaultW + "px" : "70px" : defaultW + "px",
-      height: isHovered ? defaultH >= 30 ? defaultH + "px" : "30px" : defaultH,
+      width: !vertical && isExpanded ? "100%" : defaultW ? defaultW : undefined,
+      minWidth: isHovered && minW && minW <= 70 ? "70px" : minW + "px",
+      maxWidth: !vertical && isExpanded ? "100%" : isHovered && maxW && maxW <= 70 ? "70px" : maxW + "px",
+      height: vertical && isExpanded ? "100%" : defaultH ? defaultH : undefined,
+      minHeight: isHovered && minH && minH <= 30 ? "30px" : minH + "px",
+      maxHeight: vertical && isExpanded ? "100%" : isHovered && maxH && maxH <= 30 ? "30px" : maxH + "px",
       opacity: isDragging ? 0.5 : 1,
     }),
-    [isDragging, isHovered],
+    [isDragging, isHovered, isExpanded],
   );
 
   const overlayStyles: CSSProperties = {
@@ -157,16 +165,19 @@ const GridItem: React.FC<ItemProps> = ({
 
   const buttonStyles: CSSProperties = {
     display: "flex",
-    alignItems: "start",
+    alignItems: end ? "end" : "start",
     justifyContent: "space-between",
     width: "60px",
     padding: "6px",
-  }
+    float: end ? "right" : "left",
+    background: "red"
+  };
 
   return (
     <div
       id={id}
       ref={ref}
+      data-handler-id={handlerId}
       className={`item ${(expandV && "expanded-v") || (expandH && "expanded-h")}`}
       style={containerStyles}
       onMouseEnter={() => setHovered(true)}
@@ -174,8 +185,11 @@ const GridItem: React.FC<ItemProps> = ({
       {isHovered && (
         <div style={overlayStyles}>
           <div style={buttonStyles}>
-            <Icon name="moveArrows" size={iconSize} />
-            <Icon name="horizontalExtend" size={iconSize} onClick={handleExtend} />
+            <div ref={drag}>
+              <Icon name="moveArrows" size={iconSize} />
+            </div>
+            {expandable && !vertical && <Icon name="horizontalExtend" size={iconSize} onClick={handleExtend} />}
+            {expandable && vertical && <Icon name="verticalExtend" size={iconSize} onClick={handleExtend} />}
           </div>
         </div>
       )}
