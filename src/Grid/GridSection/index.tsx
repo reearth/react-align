@@ -1,16 +1,20 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import "../grid.scss";
 
 export type SectionProps = {
-  middle?: boolean;
+  className?: string;
+  stretch?: boolean;
   fixedWidth?: number;
   fixedHeight?: number;
+  // Below are extra customizable parts only for the really picky
+  styles?: CSSProperties;
 };
 
-const GridSection: React.FC<SectionProps> = ({ middle, fixedWidth, fixedHeight, children }) => (
+const GridSection: React.FC<SectionProps> = ({ className, stretch, fixedWidth, fixedHeight, styles, children }) => (
   <div
-    className={`section ${middle && "middle"}`}
-    style={{ height: fixedHeight + "px", width: fixedWidth + "px" }}>
+    className={`${className} section ${stretch && "stretch"}`}
+    style={{ ...styles, height: fixedHeight + "px", width: fixedWidth + "px" }}
+  >
     {children}
   </div>
 );

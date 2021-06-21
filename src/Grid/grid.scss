@@ -9,27 +9,22 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: 50px;
-    margin: 2px; // SHOULD CHANGE OR PUT INTO SECTION PROPS FOR DEV SUPPORT
+    min-width: 46px;
 }
 
 .area {
-    min-height: 20px;
-    min-width: 10%;
-    border: 1px solid #3b7cd0;
-    border-radius: 5px;
-    box-sizing: border-box;
-    padding: 8px; // SHOULD CHANGE OR PUT INTO SECTION PROPS FOR DEV SUPPORT
-    background: #3b3bd0b9;
     display: flex;
-    justify-content: start;
+    box-sizing: border-box;
+    border-radius: 8px;
+    min-height: 26px;
+    min-width: 46px;
 }
 
 .item {
-    background: #E95518;
-    border: 1px solid #f17d4a;
+    background: #171618;
     border-radius: 5px;
     padding: 4px;
+    margin: 6px;
     color: white;
 
     &:hover{
@@ -72,9 +67,13 @@
     flex: auto;
 }
 
-.centered {
-    flex-grow: 0;
+.just-centered {
+    // flex-grow: 0;
     justify-content: center;
+}
+
+.just-end {
+    justify-content: flex-end;
 }
 
 .end {

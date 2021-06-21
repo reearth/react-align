@@ -35,8 +35,10 @@ export type ItemProps<T extends Location> = {
   // props passed from parent
   end?: boolean;
   vertical?: boolean;
-  // Below are extra customizable parts only for the really picky
+  // Extra customizable parts only for the really picky
+  styles?: CSSProperties;
   iconSize?: number;
+  iconColor?: string;
 };
 
 export const ItemTypes = {
@@ -64,8 +66,10 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   // passed from parent
   end,
   vertical,
-  // Picky options
-  iconSize
+  // Picky stuff
+  styles,
+  iconSize,
+  iconColor = "#FFFFF"
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setHovered] = useState(false);
@@ -76,6 +80,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
     setExpanded(!isExpanded);
   };
 
+  // ***************************************
   // Drag n drop logic
   const [{ handlerId }, drop] = useDrop({
     accept: [ItemTypes.IT3M, ItemTypes.GROUP],
@@ -136,10 +141,12 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   });
 
   preview(drop(ref));
+  // ***************************************
 
+  // ***************************************
+  // Interal styles used
   const containerStyles: CSSProperties = useMemo(
     () => ({
-      margin: "8px",
       position: "relative",
       width: !vertical && isExpanded ? "100%" : defaultW ? defaultW : undefined,
       minWidth: isHovered && minW && minW <= 70 ? "70px" : minW + "px",
@@ -149,7 +156,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       maxHeight: vertical && isExpanded ? "100%" : isHovered && maxH && maxH <= 30 ? "30px" : maxH + "px",
       opacity: isDragging ? 0.5 : 1,
     }),
-    [isDragging, isHovered, isExpanded],
+    [isDragging, isHovered, isExpanded, minH, maxH, minW, maxW, defaultH, defaultW, vertical],
   );
 
   const overlayStyles: CSSProperties = {
@@ -163,15 +170,15 @@ const GridItem: React.FC<ItemProps<Location>> = ({
     borderRadius: "5px"
   };
 
-  const buttonStyles: CSSProperties = {
-    display: "flex",
-    alignItems: end ? "end" : "start",
-    justifyContent: "space-between",
-    width: "60px",
-    padding: "6px",
-    float: end ? "right" : "left",
-    background: "red"
-  };
+  const buttonStyles: CSSProperties = useMemo(
+    () => ({
+      display: "flex",
+      alignItems: end ? "end" : "start",
+      justifyContent: "space-between",
+      padding: "6px",
+      float: end ? "right" : "left",
+    }), [end]);
+  // ***************************************
 
   return (
     <div
@@ -179,17 +186,18 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       ref={ref}
       data-handler-id={handlerId}
       className={`item ${(expandV && "expanded-v") || (expandH && "expanded-h")}`}
-      style={containerStyles}
+      style={{ ...containerStyles, ...styles }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}>
       {isHovered && (
         <div style={overlayStyles}>
           <div style={buttonStyles}>
             <div ref={drag}>
-              <Icon name="moveArrows" size={iconSize} />
+              <Icon name="moveArrows" size={iconSize} styles={{ color: iconColor }} />
             </div>
-            {expandable && !vertical && <Icon name="horizontalExtend" size={iconSize} onClick={handleExtend} />}
-            {expandable && vertical && <Icon name="verticalExtend" size={iconSize} onClick={handleExtend} />}
+            {expandable &&
+              <Icon name={vertical ? "verticalExtend" : "horizontalExtend"} size={iconSize} styles={{ color: iconColor, marginLeft: "8px" }} onClick={handleExtend} />
+            }
           </div>
         </div>
       )}
@@ -197,4 +205,5 @@ const GridItem: React.FC<ItemProps<Location>> = ({
     </div>
   );
 };
+
 export default GridItem;

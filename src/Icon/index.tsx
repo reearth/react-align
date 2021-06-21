@@ -10,29 +10,27 @@ export type IconProps = {
     name: string | Icons;
     size?: number;
     onClick?: () => void;
-    style?: CSSProperties;
+    styles?: CSSProperties;
 }
 
 const IconStyles = (size?: number) => css({
     cursor: "pointer",
-    ":hover": {
-        // background: "red",
-        // boxShadow: "rgb(38, 57, 77) 0px 20px 30px -10px"
-    },
+    width: size || 24 + "px",
+    height: size || 24 + "px",
     ' svg': {
-        height: size || 24,
-        width: size || 24,
+        height: size || 24 + "px",
+        width: size || 24 + "px",
     }
 })
 
-const Icon: React.FC<IconProps> = ({ name, size, onClick, style }) => {
+const Icon: React.FC<IconProps> = ({ name, size, onClick, styles }) => {
     if (typeof name === "string") {
         const LocalIconComponent = Icons[name as Icons];
         if (LocalIconComponent) {
             return (
                 <ReactSVG
                     src={LocalIconComponent}
-                    style={style}
+                    style={styles}
                     {...IconStyles(size)}
                     onClick={onClick}
                 />
