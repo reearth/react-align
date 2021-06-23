@@ -80,6 +80,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   const handleExtend = () => {
     if (!expandable) return;
     setExpanded(!isExpanded);
+    setHovered(false);
   };
 
   // ***************************************
@@ -92,7 +93,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       };
     },
     hover(item: DragItem, monitor) {
-      if (!ref.current || editorMode === false || draggable === false) {
+      if (!ref.current || editorMode || draggable) {
         return;
       }
       const dragIndex = item.index;

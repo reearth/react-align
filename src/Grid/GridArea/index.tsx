@@ -53,17 +53,10 @@ const GridArea: React.FC<AreaProps<Location>> = ({
   const buttonStyle: CSSProperties = useMemo(
     () => ({
       position: "absolute",
-      left: vertical && !end ? undefined : 0,
-      right: vertical && end ? undefined : 0,
-      bottom: 0,
-      top: vertical || end ? 0 : undefined,
-      marginLeft: vertical ? 0 : "auto",
-      marginRight: vertical ? 0 : "auto",
-      marginTop: vertical ? "auto" : 0,
-      marginBottom: vertical ? "auto" : 0,
-      display: "flex",
-      flexDirection: vertical ? "column" : "row",
-      justifyContent: "center",
+      left: vertical ? end ? -8 : undefined : "50%",
+      right: vertical ? !end ? -8 : undefined : "50%",
+      bottom: !vertical && !end ? -8 : vertical ? "50%" : undefined,
+      top: vertical ? "50%" : end ? -8 : undefined,
     }), [vertical, end]);
 
   const mainStyles: CSSProperties = useMemo(
