@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, CSSProperties, useState } from "react";
 import { useDrag, useDrop, DragSourceMonitor } from "react-dnd";
+import { useContext, ContextType } from "../../contextProvider";
 import { DragItem } from "../interfaces";
 
 import Icon from "../../Icon";
@@ -20,7 +21,7 @@ export type ItemProps<T extends Location> = {
   minW: number;
   maxW: number;
   defaultW?: number;
-  draggable: boolean;
+  draggable?: boolean; // optional to override or not use editorMode context **Needs to be accompanied with GridAreas droppable prop**
   location: T;
   onReorder: (
     originalLocation?: T,
@@ -69,9 +70,10 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   // Picky stuff
   styles,
   iconSize,
-  iconColor = "#FFFFF"
+  iconColor = "rgb(255, 255, 255)"
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const { editorMode }: ContextType = useContext();
   const [isHovered, setHovered] = useState(false);
   const [isExpanded, setExpanded] = useState(false);
 
@@ -90,7 +92,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       };
     },
     hover(item: DragItem, monitor) {
-      if (!ref.current) {
+      if (!ref.current || editorMode === false || draggable === false) {
         return;
       }
       const dragIndex = item.index;
@@ -127,7 +129,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   const [{ isDragging }, drag, preview] = useDrag({
     type: ItemTypes.IT3M,
     item: { id, index },
-    canDrag: draggable,
+    canDrag: draggable ?? editorMode,
     end: (item, monitor) => {
       const dropResults: { location: Location } | null = monitor.getDropResult();
 
@@ -167,7 +169,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
     height: "100%",
     boxSizing: "border-box",
     background: "rgba(0,0,0,0.6)",
-    borderRadius: "5px"
+    borderRadius: "6px"
   };
 
   const buttonStyles: CSSProperties = useMemo(
@@ -189,7 +191,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       style={{ ...containerStyles, ...styles }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}>
-      {isHovered && (
+      {(draggable ?? editorMode) && isHovered && (
         <div style={overlayStyles}>
           <div style={buttonStyles}>
             <div ref={drag}>

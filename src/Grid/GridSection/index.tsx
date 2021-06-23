@@ -6,7 +6,7 @@ export type SectionProps = {
   stretch?: boolean;
   fixedWidth?: number;
   fixedHeight?: number;
-  // Below are extra customizable parts only for the really picky
+  // Extra customizable parts only for the really picky
   styles?: CSSProperties;
 };
 

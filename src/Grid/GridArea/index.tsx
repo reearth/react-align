@@ -1,6 +1,7 @@
 import React, { CSSProperties, useMemo } from "react";
 import { useDrop, DropTargetMonitor } from "react-dnd";
 import { Location, ItemProps } from "../GridItem";
+import { useContext, ContextType } from "../../contextProvider";
 import Icon from "../../Icon";
 import "../grid.scss";
 
@@ -14,6 +15,7 @@ export type AreaProps<T extends Location> = {
   reverse?: boolean;
   stretch?: boolean;
   end?: boolean;
+  droppable?: boolean; // optional to override or not use editorMode context **Needs to be accompanied with GridItems draggable prop**
   align?: Alignments;
   onAlignChange?: () => void;
   location: T;
@@ -28,6 +30,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
   reverse,
   stretch,
   end,
+  droppable,
   align,
   onAlignChange,
   location,
@@ -36,13 +39,13 @@ const GridArea: React.FC<AreaProps<Location>> = ({
   styles,
   iconColor = "#FFFFFF"
 }) => {
+  const { editorMode }: ContextType = useContext();
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: [ItemTypes.IT3M, ItemTypes.GROUP],
     drop: () => ({ location: location }),
     collect: (monitor: DropTargetMonitor) => ({
       isOver: monitor.isOver(),
-      draggingItem: monitor.getItemType() as string,
     }),
   })
   );
@@ -53,7 +56,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
       left: vertical && !end ? undefined : 0,
       right: vertical && end ? undefined : 0,
       bottom: 0,
-      top: vertical ? 0 : undefined,
+      top: vertical || end ? 0 : undefined,
       marginLeft: vertical ? 0 : "auto",
       marginRight: vertical ? 0 : "auto",
       marginTop: vertical ? "auto" : 0,
@@ -68,6 +71,8 @@ const GridArea: React.FC<AreaProps<Location>> = ({
       opacity: isOver ? 0.8 : 1,
       position: "relative"
     }), [isOver]);
+
+  const stylesFromProps: CSSProperties | undefined = editorMode ? styles : undefined;
 
   const childrenWithParentProps = React.Children.map(
     children, child => React.cloneElement(child as React.ReactElement<ItemProps<Location>>, { end, vertical })
@@ -91,9 +96,9 @@ const GridArea: React.FC<AreaProps<Location>> = ({
             : "horizontal"
         }
             `}
-      style={{ ...mainStyles, ...styles }}>
+      style={{ ...mainStyles, ...stylesFromProps }}>
       {childrenWithParentProps}
-      {align && (
+      {(droppable ?? editorMode) && align && (
         <div style={buttonStyle}>
           <Icon
             name={align === "centered" ? "alignCenter" : align === "end" ? "alignEnd" : "alignStart"}

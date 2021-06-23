@@ -10,7 +10,9 @@ export type WrapperProps = {
 
 const GridWrapper: React.FC<WrapperProps> = ({ vertical, stretch, children }) => (
   <div className={`wrapper ${vertical && "vertical"} ${stretch && "stretch"}`}>
-    <DndProvider backend={HTML5Backend}>{children}</DndProvider>
+    <DndProvider backend={HTML5Backend}>
+      {children}
+    </DndProvider>
   </div>
 );
 
