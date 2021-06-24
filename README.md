@@ -55,7 +55,9 @@ Finally, the min/max for width and height is expected to set the GridItem contai
 
 ## Editor mode
 Re:Align comes with a context provider and more that allows for a toggleable Editor Mode that enables and disables the editing functionality of Re:Align. 
+
 <img width="854" alt="Screen Shot 2021-06-24 at 18 15 51" src="https://user-images.githubusercontent.com/34051327/123240889-ad1b1a80-d51b-11eb-9a7d-8f9e75a9b9e0.png">
+
 The general idea of use is to wrap the part of your app you want aligned as well as any components like a toggle button in the EditorModeContextProvider component so that they can all access the same context.
 
 Something like this:
