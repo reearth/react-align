@@ -107,6 +107,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
             ? "horizontal-r"
             : "horizontal"
         }
+      ${editorMode ? "area-transition-in" : "area-transition-out"}
       `}
       style={{ ...mainStyles, ...stylesFromProps }}>
       {childrenWithParentProps}
