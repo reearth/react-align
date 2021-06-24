@@ -87,7 +87,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
   // Rebuilds the GridItem children to receive their parent GridArea's 'end' and 'vertical' values.
   // Used to know where to align the overlay buttons (end) and how to extend the GridItems (vertical).
   const childrenWithParentProps = React.Children.map(
-    children, child => React.cloneElement(child as React.ReactElement<ItemProps<Location>>, { end, vertical })
+    children, child => React.cloneElement(child as React.ReactElement<ItemProps<Location>>, { end, vertical, location })
   );
 
   return (

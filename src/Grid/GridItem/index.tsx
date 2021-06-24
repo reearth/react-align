@@ -22,7 +22,6 @@ export type ItemProps<T extends Location> = {
   maxW: number;
   defaultW?: number;
   draggable?: boolean; // Optional to override or not use editorMode context. **Needs to be accompanied with GridAreas droppable prop**
-  location: T;
   onReorder: (
     originalLocation?: T,
     currentIndex?: number,
@@ -35,6 +34,7 @@ export type ItemProps<T extends Location> = {
   ) => void;
   onExtend?: (id: string) => void;
   // Props passed from parent.
+  location?: T;
   end?: boolean;
   vertical?: boolean;
   // Extra customizable parts only for the really picky.
@@ -62,11 +62,11 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   maxW,
   defaultW,
   draggable,
-  location,
   onReorder,
   onMoveArea,
   // onExtend, <----------------------- NEED TO UNCOMMENT !!!!!!!!!!!!
   // Passed from parent (aka GridArea).
+  location,
   end,
   vertical,
   // Picky stuff.
