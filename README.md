@@ -7,7 +7,7 @@ A highly customizable and powerful drag 'n drop align system for React.
 - Customizable features and styles to integrate into your app effectively
 - Fully written in TypeScript
 
-<img width="1281" alt="Screen Shot 2021-06-24 at 18 42 01" src="https://user-images.githubusercontent.com/34051327/123241401-17cc5600-d51c-11eb-8388-4c0ab8c562aa.png">
+<img width="1278" alt="Screen Shot 2021-06-24 at 18 46 47" src="https://user-images.githubusercontent.com/34051327/123242051-9e813300-d51c-11eb-88e4-0620db121148.png">
 
 ## Basic use
 ```tsx
