@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 
-export type ContextType = {
+type EditorModeContextType = {
     editorMode?: boolean;
     setEditorMode?: (on: boolean) => void;
 };
 
-const Context = React.createContext<ContextType>({});
+const EditorModeContext = React.createContext<EditorModeContextType>({});
 
-export type ContextProviderProps = {
+type EditorModeContextProviderProps = {
     children?: React.ReactNode;
 };
 
-// Wrap section of your app you want the context.
-const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
+// Wrap section of your app you want to access editorMode.
+const EditorModeContextProvider: React.FC<EditorModeContextProviderProps> = ({ children }) => {
     const [editorMode, setEditorMode] = useState(false);
     const value = { editorMode, setEditorMode };
 
-    return <Context.Provider value={value}>{children}</Context.Provider>
+    return <EditorModeContext.Provider value={value}>{children}</EditorModeContext.Provider>
 };
 
 // useContext has extra safety in checking if context has a value. 
 // You can destructure into a component and use the context as you like.
 const useContext = () => {
-    const context = React.useContext(Context);
+    const context = React.useContext(EditorModeContext);
     if (context === undefined) {
         throw new Error("useContext must be used within the ContextProvider")
     };
@@ -33,10 +33,10 @@ const useContext = () => {
 // go this approach and wrap your component like: const coolButton = ContextConsumer(Button)
 const ContextConsumer = <P extends object>(
     Component: React.FC<P>,
-): React.FC<Omit<P, keyof ContextType>> => props => (
-    <Context.Consumer>
+): React.FC<Omit<P, keyof EditorModeContextType>> => props => (
+    <EditorModeContext.Consumer>
         {({ editorMode, setEditorMode }) => <Component {...props as P} editorMode={editorMode} setEditorMode={setEditorMode} />}
-    </Context.Consumer>
+    </EditorModeContext.Consumer>
 );
 
-export { useContext, ContextProvider, ContextConsumer };
+export { useContext, EditorModeContextProvider, ContextConsumer, EditorModeContextType, EditorModeContextProviderProps };

@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, CSSProperties, useState } from "react";
 import { useDrag, useDrop, DragSourceMonitor } from "react-dnd";
-import { useContext, ContextType } from "../../contextProvider";
+import { useContext, EditorModeContextType } from "../../contextProvider";
 import { DragItem } from "../interfaces";
 
 import Icon from "../../Icon";
@@ -10,18 +10,18 @@ import "../grid.scss";
 export type Location = { section?: string, area?: string };
 
 export type ItemProps<T extends Location> = {
+  className?: string;
   id: string;
   index: number;
-  expandable?: boolean;
-  expandV?: boolean;
-  expandH?: boolean;
+  extendable?: boolean;
+  extended?: boolean;
   minH: number;
   maxH: number;
   defaultH?: number;
   minW: number;
   maxW: number;
   defaultW?: number;
-  draggable?: boolean; // optional to override or not use editorMode context **Needs to be accompanied with GridAreas droppable prop**
+  draggable?: boolean; // Optional to override or not use editorMode context. **Needs to be accompanied with GridAreas droppable prop**
   location: T;
   onReorder: (
     originalLocation?: T,
@@ -33,10 +33,11 @@ export type ItemProps<T extends Location> = {
     dropLocation?: T,
     originalLocation?: T
   ) => void;
-  // props passed from parent
+  onExtend?: (id: string) => void;
+  // Props passed from parent.
   end?: boolean;
   vertical?: boolean;
-  // Extra customizable parts only for the really picky
+  // Extra customizable parts only for the really picky.
   styles?: CSSProperties;
   iconSize?: number;
   iconColor?: string;
@@ -48,12 +49,12 @@ export const ItemTypes = {
 };
 
 const GridItem: React.FC<ItemProps<Location>> = ({
+  className,
   children,
   id,
   index,
-  expandable,
-  expandV,
-  expandH,
+  extendable,
+  // extended, <------------------------ NEED TO UNCOMMENT OUT !!!!!!!!!!!!!!!!!!
   minH,
   maxH,
   defaultH,
@@ -64,22 +65,26 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   location,
   onReorder,
   onMoveArea,
-  // passed from parent
+  // onExtend, <----------------------- NEED TO UNCOMMENT !!!!!!!!!!!!
+  // Passed from parent (aka GridArea).
   end,
   vertical,
-  // Picky stuff
+  // Picky stuff.
   styles,
   iconSize,
   iconColor = "rgb(255, 255, 255)"
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { editorMode }: ContextType = useContext();
+  const { editorMode }: EditorModeContextType = useContext();
+
   const [isHovered, setHovered] = useState(false);
-  const [isExpanded, setExpanded] = useState(false);
+  const [isExpanded, setExpanded] = useState(false); // TO DELETE. Need to replace isExpanded in below styles with  !!!!!!!!!!!!!!!!!!!!!!!
 
   const handleExtend = () => {
-    if (!expandable) return;
-    setExpanded(!isExpanded);
+    if (!extendable) return;
+    // if (!expandable || !onExtend) return; <--------change to
+    setExpanded(!isExpanded); // TO DELETE !!!!!!!!!!!!!!!!!!!!!!!
+    // onExtend(id); <------- change to
     setHovered(false);
   };
 
@@ -148,6 +153,8 @@ const GridItem: React.FC<ItemProps<Location>> = ({
 
   // ***************************************
   // Interal styles used
+  // User can pass min/max/default for height and width. 
+  // If min width/height is too small to show drag/expand icon(s) on hover, it will grow enough to show them.
   const containerStyles: CSSProperties = useMemo(
     () => ({
       position: "relative",
@@ -188,7 +195,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       id={id}
       ref={ref}
       data-handler-id={handlerId}
-      className={`item ${(expandV && "expanded-v") || (expandH && "expanded-h")}`}
+      className={`${className} item`}
       style={{ ...containerStyles, ...styles }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}>
@@ -198,7 +205,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
             <div ref={drag}>
               <Icon name="moveArrows" size={iconSize} styles={{ color: iconColor }} />
             </div>
-            {expandable &&
+            {extendable &&
               <Icon name={vertical ? "verticalExtend" : "horizontalExtend"} size={iconSize} styles={{ color: iconColor, marginLeft: "8px" }} onClick={handleExtend} />
             }
           </div>

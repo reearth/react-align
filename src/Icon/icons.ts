@@ -6,6 +6,9 @@ import MoveArrows from "./Icons/moveArrows.svg";
 import AlignStart from "./Icons/alignStart.svg";
 import AlignCenter from "./Icons/alignCenter.svg";
 import AlignEnd from "./Icons/alignEnd.svg";
+import AlignStartV from "./Icons/alignStartV.svg";
+import AlignCenterV from "./Icons/alignCenterV.svg";
+import AlignEndV from "./Icons/alignEndV.svg";
 
 export default {
     horizontalExtend: HorizontalExtend,
@@ -16,4 +19,7 @@ export default {
     alignStart: AlignStart,
     alignCenter: AlignCenter,
     alignEnd: AlignEnd,
+    alignStartV: AlignStartV,
+    alignCenterV: AlignCenterV,
+    alignEndV: AlignEndV,
 };

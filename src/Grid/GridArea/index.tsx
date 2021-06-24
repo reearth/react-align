@@ -1,7 +1,7 @@
-import React, { CSSProperties, useMemo } from "react";
+import React, { CSSProperties, useEffect, useMemo } from "react";
 import { useDrop, DropTargetMonitor } from "react-dnd";
 import { Location, ItemProps } from "../GridItem";
-import { useContext, ContextType } from "../../contextProvider";
+import { useContext, EditorModeContextType } from "../../contextProvider";
 import Icon from "../../Icon";
 import "../grid.scss";
 
@@ -39,8 +39,10 @@ const GridArea: React.FC<AreaProps<Location>> = ({
   styles,
   iconColor = "#FFFFFF"
 }) => {
-  const { editorMode }: ContextType = useContext();
+  const { editorMode }: EditorModeContextType = useContext();
 
+  // ***************************************
+  // Drop logic
   const [{ isOver }, drop] = useDrop(() => ({
     accept: [ItemTypes.IT3M, ItemTypes.GROUP],
     drop: () => ({ location: location }),
@@ -49,24 +51,41 @@ const GridArea: React.FC<AreaProps<Location>> = ({
     }),
   })
   );
+  // ***************************************
 
+  // ***************************************
+  // Internal styles used
   const buttonStyle: CSSProperties = useMemo(
     () => ({
       position: "absolute",
-      left: vertical ? end ? -8 : undefined : "50%",
-      right: vertical ? !end ? -8 : undefined : "50%",
-      bottom: !vertical && !end ? -8 : vertical ? "50%" : undefined,
-      top: vertical ? "50%" : end ? -8 : undefined,
-    }), [vertical, end]);
+      left: vertical ? end ? 0 : undefined : "50%",
+      right: vertical ? !end ? 0 : undefined : "50%",
+      bottom: !vertical && !end ? 0 : vertical ? "50%" : undefined,
+      top: vertical ? "50%" : end ? 0 : undefined,
+      opacity: (droppable ?? editorMode) && align ? 1 : 0,
+      transition: "all 0.5s ease-in-out"
+    }), [vertical, end, droppable, editorMode, align]);
+
+  useEffect(() => {
+    console.log("editorMode changed")
+    if (location.section === "right" && location.area === "top") {
+      console.log(!React.Children.count(children) && !editorMode, "no children or editormode");
+      console.log(children, "children")
+    }
+  }, [editorMode])
 
   const mainStyles: CSSProperties = useMemo(
     () => ({
       opacity: isOver ? 0.8 : 1,
-      position: "relative"
-    }), [isOver]);
+      minHeight: !React.Children.count(children) && !editorMode ? "0px" : "26px",
+      minWidth: !React.Children.count(children) && !editorMode ? "0px" : "46px"
+    }), [isOver, children, editorMode]);
 
   const stylesFromProps: CSSProperties | undefined = editorMode ? styles : undefined;
+  // ***************************************
 
+  // Rebuilds the GridItem children to receive their parent GridArea's 'end' and 'vertical' values.
+  // Used to know where to align the overlay buttons (end) and how to extend the GridItems (vertical).
   const childrenWithParentProps = React.Children.map(
     children, child => React.cloneElement(child as React.ReactElement<ItemProps<Location>>, { end, vertical })
   );
@@ -75,12 +94,12 @@ const GridArea: React.FC<AreaProps<Location>> = ({
     <div
       ref={drop}
       className={`
-        ${className} 
-        area 
-        ${stretch && "stretch"} 
-        ${end && "end"} 
-        ${align === "centered" ? "just-centered" : align === "end" ? "just-end" : "start"}
-        ${vertical
+      ${className} 
+      area 
+      ${stretch && "stretch"} 
+      ${end && "end"} 
+      ${align === "centered" ? "just-centered" : align === "end" ? "just-end" : "start"}
+      ${vertical
           ? reverse
             ? "vertical-r"
             : "vertical"
@@ -88,18 +107,29 @@ const GridArea: React.FC<AreaProps<Location>> = ({
             ? "horizontal-r"
             : "horizontal"
         }
-            `}
+      `}
       style={{ ...mainStyles, ...stylesFromProps }}>
       {childrenWithParentProps}
-      {(droppable ?? editorMode) && align && (
-        <div style={buttonStyle}>
+      <div style={buttonStyle}>
+        {(droppable ?? editorMode) && align && !!React.Children.count(children) && (
           <Icon
-            name={align === "centered" ? "alignCenter" : align === "end" ? "alignEnd" : "alignStart"}
+            name={
+              align === "centered"
+                ? vertical
+                  ? "alignCenterV"
+                  : "alignCenter"
+                : align === "end"
+                  ? vertical
+                    ? "alignEndV"
+                    : "alignEnd"
+                  : vertical
+                    ? "alignStartV"
+                    : "alignStart"}
             styles={{ color: iconColor }}
             onClick={onAlignChange}
           />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

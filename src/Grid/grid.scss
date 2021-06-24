@@ -17,8 +17,8 @@
     border: 1px solid transparent;
     box-sizing: border-box;
     border-radius: 8px;
-    min-height: 26px;
-    min-width: 46px;
+    position: relative;
+    transition: all 0.3s ease-in-out;
 }
 
 .item {
@@ -44,14 +44,6 @@
 
 .horizontal-r {
     flex-direction: row-reverse;
-}
-
-.expanded-v {
-    height: 100%;
-}
-
-.expanded-h {
-    width: 100%;
 }
 
 .stretch {
