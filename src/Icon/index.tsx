@@ -7,6 +7,7 @@ import Icons from "./icons";
 export type Icons = keyof typeof Icons;
 
 export type IconProps = {
+    className?: string;
     name: string | Icons;
     size?: number;
     onClick?: () => void;
@@ -23,15 +24,16 @@ const IconStyles = (size?: number) => css({
     }
 })
 
-const Icon: React.FC<IconProps> = ({ name, size, onClick, styles }) => {
+const Icon: React.FC<IconProps> = ({ className, name, size, onClick, styles }) => {
     if (typeof name === "string") {
         const LocalIconComponent = Icons[name as Icons];
         if (LocalIconComponent) {
             return (
                 <ReactSVG
+                    className={className}
                     src={LocalIconComponent}
-                    style={styles}
                     {...IconStyles(size)}
+                    style={styles}
                     onClick={onClick}
                 />
             );
@@ -39,7 +41,7 @@ const Icon: React.FC<IconProps> = ({ name, size, onClick, styles }) => {
     }
 
     return (
-        <ReactSVG src={name} />
+        <ReactSVG className={className} src={name} />
     )
 };
 

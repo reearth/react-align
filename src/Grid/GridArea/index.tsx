@@ -66,14 +66,6 @@ const GridArea: React.FC<AreaProps<Location>> = ({
       transition: "all 0.5s ease-in-out"
     }), [vertical, end, droppable, editorMode, align]);
 
-  useEffect(() => {
-    console.log("editorMode changed")
-    if (location.section === "right" && location.area === "top") {
-      console.log(!React.Children.count(children) && !editorMode, "no children or editormode");
-      console.log(children, "children")
-    }
-  }, [editorMode])
-
   const mainStyles: CSSProperties = useMemo(
     () => ({
       opacity: isOver ? 0.8 : 1,
@@ -112,24 +104,22 @@ const GridArea: React.FC<AreaProps<Location>> = ({
       style={{ ...mainStyles, ...stylesFromProps }}>
       {childrenWithParentProps}
       <div style={buttonStyle}>
-        {(droppable ?? editorMode) && align && !!React.Children.count(children) && (
-          <Icon
-            name={
-              align === "centered"
+        <Icon
+          name={
+            align === "centered"
+              ? vertical
+                ? "alignCenterV"
+                : "alignCenter"
+              : align === "end"
                 ? vertical
-                  ? "alignCenterV"
-                  : "alignCenter"
-                : align === "end"
-                  ? vertical
-                    ? "alignEndV"
-                    : "alignEnd"
-                  : vertical
-                    ? "alignStartV"
-                    : "alignStart"}
-            styles={{ color: iconColor }}
-            onClick={onAlignChange}
-          />
-        )}
+                  ? "alignEndV"
+                  : "alignEnd"
+                : vertical
+                  ? "alignStartV"
+                  : "alignStart"}
+          styles={{ color: iconColor, cursor: (droppable ?? editorMode) && align && !!React.Children.count(children) ? "pointer" : "default" }}
+          onClick={(droppable ?? editorMode) && align && !!React.Children.count(children) ? onAlignChange : undefined}
+        />
       </div>
     </div>
   );
