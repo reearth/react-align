@@ -1,15 +1,11 @@
 {
+  "name": "realign",
   "version": "0.1.0",
+  "author": "KaWaite",
+  "module": "dist/realign.esm.js",
   "license": "MIT",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "engines": {
-    "node": ">=10"
-  },
+  "types": "dist/index.d.ts",
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
@@ -20,6 +16,13 @@
     "analyze": "size-limit --why",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
   },
   "peerDependencies": {
     "react": ">=16"
@@ -35,9 +38,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "realign",
-  "author": "KaWaite",
-  "module": "dist/realign.esm.js",
   "size-limit": [
     {
       "path": "dist/realign.cjs.production.min.js",
@@ -59,13 +59,10 @@
     "@types/react": "^17.0.8",
     "@types/react-dom": "^17.0.5",
     "babel-loader": "^8.2.2",
-    "cssnano": "^5.0.4",
     "husky": "^6.0.0",
-    "postcss": "^8.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-is": "^17.0.2",
-    "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-svg": "^2.0.0",
     "size-limit": "^4.11.0",
     "tsdx": "^0.14.1",
@@ -76,7 +73,6 @@
     "glamor": "^2.20.40",
     "react-dnd": "^14.0.2",
     "react-dnd-html5-backend": "^14.0.0",
-    "react-svg": "^13.0.6",
-    "sass": "^1.34.0"
+    "react-svg": "^13.0.6"
   }
 }
