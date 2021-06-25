@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useMemo } from "react";
+import React, { CSSProperties, useMemo } from "react";
 import { useDrop, DropTargetMonitor } from "react-dnd";
 import { Location, ItemProps } from "../GridItem";
 import { useContext, EditorModeContextType } from "../../contextProvider";
