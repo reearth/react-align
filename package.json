@@ -70,9 +70,12 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
+    "cssnano": "^5.0.6",
     "glamor": "^2.20.40",
+    "postcss": "^8.3.5",
     "react-dnd": "^14.0.2",
     "react-dnd-html5-backend": "^14.0.0",
-    "react-svg": "^13.0.6"
+    "react-svg": "^13.0.6",
+    "rollup-plugin-postcss": "^4.0.0"
   }
 }
