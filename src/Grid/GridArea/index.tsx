@@ -21,6 +21,7 @@ export type AreaProps<T extends Location> = {
   location: T;
   // Extra customizable parts only for the really picky
   styles?: CSSProperties;
+  editorStyles?: CSSProperties;
   iconColor?: string;
 };
 
@@ -37,6 +38,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
   children,
   // Picky stuff
   styles,
+  editorStyles,
   iconColor = "#FFFFFF"
 }) => {
   const { editorMode }: EditorModeContextType = useContext();
@@ -73,7 +75,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
       minWidth: !React.Children.count(children) && !editorMode ? "0px" : "46px"
     }), [isOver, children, editorMode]);
 
-  const stylesFromProps: CSSProperties | undefined = editorMode ? styles : undefined;
+  const stylesFromProps: CSSProperties | undefined = editorMode ? editorStyles : styles;
   // ***************************************
 
   // Rebuilds the GridItem children to receive their parent GridArea's 'end' and 'vertical' values.

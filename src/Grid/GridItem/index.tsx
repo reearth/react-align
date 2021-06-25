@@ -39,6 +39,7 @@ export type ItemProps<T extends Location> = {
   vertical?: boolean;
   // Extra customizable parts only for the really picky.
   styles?: CSSProperties;
+  editorStyles?: CSSProperties;
   iconSize?: number;
   iconColor?: string;
 };
@@ -71,6 +72,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   vertical,
   // Picky stuff.
   styles,
+  editorStyles,
   iconSize,
   iconColor = "rgb(255, 255, 255)"
 }) => {
@@ -155,6 +157,8 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   // Interal styles used
   // User can pass min/max/default for height and width. 
   // If min width/height is too small to show drag/expand icon(s) on hover, it will grow enough to show them.
+  const stylesFromProps: CSSProperties | undefined = editorMode ? editorStyles : styles;
+
   const containerStyles: CSSProperties = useMemo(
     () => ({
       position: "relative",
@@ -196,7 +200,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       ref={ref}
       data-handler-id={handlerId}
       className={`${className} item`}
-      style={{ ...containerStyles, ...styles }}
+      style={{ ...containerStyles, ...stylesFromProps }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}>
       {(draggable ?? editorMode) && isHovered && (
