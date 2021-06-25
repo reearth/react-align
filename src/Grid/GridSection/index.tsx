@@ -1,5 +1,5 @@
 import React, { CSSProperties } from "react";
-import "../grid.scss";
+import "../grid.css";
 
 export type SectionProps = {
   className?: string;

@@ -3,6 +3,8 @@
     height: 100%;
     display: flex;
     justify-content: space-between;
+    background: red;
+    margin:10px;
 }
 
 .section {
@@ -34,7 +36,7 @@
     border-radius: 6px;
 }
 
-// Variable styles
+/* Variable styles */
 
 .vertical {
     flex-direction: column;

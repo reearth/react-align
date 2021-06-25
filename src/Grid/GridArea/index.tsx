@@ -3,7 +3,7 @@ import { useDrop, DropTargetMonitor } from "react-dnd";
 import { Location, ItemProps } from "../GridItem";
 import { useContext, EditorModeContextType } from "../../contextProvider";
 import Icon from "../../Icon";
-import "../grid.scss";
+import "../grid.css";
 
 import { ItemTypes } from "../GridItem";
 

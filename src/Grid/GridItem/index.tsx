@@ -5,7 +5,7 @@ import { DragItem } from "../interfaces";
 
 import Icon from "../../Icon";
 
-import "../grid.scss";
+import "../grid.css";
 
 export type Location = { section?: string, area?: string };
 
