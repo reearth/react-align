@@ -15,12 +15,6 @@ export type ItemProps<T extends Location> = {
   index: number;
   extendable?: boolean;
   extended?: boolean;
-  minH: number;
-  maxH: number;
-  defaultH?: number;
-  minW: number;
-  maxW: number;
-  defaultW?: number;
   draggable?: boolean; // Optional to override or not use editorMode context. **Needs to be accompanied with GridAreas droppable prop**
   onReorder: (
     originalLocation?: T,
@@ -56,12 +50,6 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   index,
   extendable,
   // extended, <------------------------ NEED TO UNCOMMENT OUT !!!!!!!!!!!!!!!!!!
-  minH,
-  maxH,
-  defaultH,
-  minW,
-  maxW,
-  defaultW,
   draggable,
   onReorder,
   onMoveArea,
@@ -154,23 +142,29 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   // ***************************************
 
   // ***************************************
-  // Interal styles used
-  // User can pass min/max/default for height and width. 
-  // If min width/height is too small to show drag/expand icon(s) on hover, it will grow enough to show them.
+  // External styles for editorMode or the vanilla grid
   const stylesFromProps: CSSProperties | undefined = editorMode ? editorStyles : styles;
 
-  const containerStyles: CSSProperties = useMemo(
+  const itemStyles: CSSProperties = useMemo(
     () => ({
-      position: "relative",
-      width: !vertical && isExpanded ? "100%" : defaultW ? defaultW : undefined,
-      minWidth: isHovered && editorMode && minW && minW <= 70 ? "70px" : minW + "px",
-      maxWidth: !vertical && isExpanded ? "100%" : isHovered && editorMode && maxW && maxW <= 70 ? "70px" : maxW + "px",
-      height: vertical && isExpanded ? "100%" : defaultH ? defaultH : undefined,
-      minHeight: isHovered && editorMode && minH && minH <= 40 ? "40px" : minH + "px",
-      maxHeight: vertical && isExpanded ? "100%" : isHovered && editorMode && maxH && maxH <= 30 ? "30px" : maxH + "px",
       opacity: isDragging ? 0.5 : 1,
+      minHeight: isHovered && editorMode ? "40px" : undefined,
+      width: !vertical && isExpanded ? "100%" : undefined,
+      minWidth: isHovered && editorMode ? extendable ? "70px" : "30px" : undefined,
+      height: vertical && isExpanded ? "100%" : undefined,
     }),
-    [isDragging, isHovered, isExpanded, minH, maxH, minW, maxW, defaultH, defaultW, vertical],
+    [isDragging, isHovered, isExpanded, vertical],
+  );
+
+  const containerStyle: CSSProperties = useMemo(() => ({
+    position: "relative",
+    display: "inline-block",
+    minHeight: isHovered && editorMode ? "40px" : undefined,
+    width: !vertical && isExpanded ? "100%" : undefined,
+    minWidth: isHovered && editorMode ? extendable ? "70px" : "30px" : undefined,
+    height: vertical && isExpanded ? "100%" : undefined,
+  }),
+    [isHovered, isExpanded, vertical],
   );
 
   const overlayStyles: CSSProperties = {
@@ -194,28 +188,34 @@ const GridItem: React.FC<ItemProps<Location>> = ({
     }), [end]);
   // ***************************************
 
+  const childrenWithParentProps = React.Children.map(
+    children, child => React.cloneElement(child as React.ReactElement<{ extended: boolean }>, { extended: isExpanded })
+  );
+
   return (
     <div
       id={id}
       ref={ref}
       data-handler-id={handlerId}
       className={`${className} item`}
-      style={{ ...containerStyles, ...stylesFromProps }}
+      style={{ ...itemStyles, ...stylesFromProps }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}>
-      {(draggable ?? editorMode) && isHovered && (
-        <div style={overlayStyles}>
-          <div style={buttonStyles}>
-            <div ref={drag}>
-              <Icon name="moveArrows" size={iconSize} styles={{ color: iconColor }} />
+      <div style={containerStyle}>
+        {(draggable ?? editorMode) && isHovered && (
+          <div style={overlayStyles}>
+            <div style={buttonStyles}>
+              <div ref={drag}>
+                <Icon name="moveArrows" size={iconSize} styles={{ color: iconColor }} />
+              </div>
+              {extendable &&
+                <Icon name={vertical ? "verticalExtend" : "horizontalExtend"} size={iconSize} styles={{ color: iconColor, marginLeft: "8px" }} onClick={handleExtend} />
+              }
             </div>
-            {extendable &&
-              <Icon name={vertical ? "verticalExtend" : "horizontalExtend"} size={iconSize} styles={{ color: iconColor, marginLeft: "8px" }} onClick={handleExtend} />
-            }
           </div>
-        </div>
-      )}
-      {children}
+        )}
+        {childrenWithParentProps}
+      </div>
     </div>
   );
 };
