@@ -17,7 +17,7 @@ export type AreaProps<T extends Location> = {
   end?: boolean;
   droppable?: boolean; // optional to override or not use editorMode context **Needs to be accompanied with GridItems draggable prop**
   align?: Alignments;
-  onAlignChange?: () => void;
+  setAlign?: React.Dispatch<React.SetStateAction<Alignments>>;
   location: T;
   // Extra customizable parts only for the really picky
   styles?: CSSProperties;
@@ -33,7 +33,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
   end,
   droppable,
   align,
-  onAlignChange,
+  setAlign,
   location,
   children,
   // Picky stuff
@@ -42,6 +42,22 @@ const GridArea: React.FC<AreaProps<Location>> = ({
   iconColor = "#FFFFFF"
 }) => {
   const { editorMode }: EditorModeContextType = useContext();
+
+  const onAlignChange = (align?: Alignments, setAlign?: React.Dispatch<React.SetStateAction<Alignments>>) => {
+    if (!align || !setAlign) return;
+
+    switch (align) {
+      case "start":
+        setAlign("centered");
+        break;
+      case "centered":
+        setAlign("end");
+        break;
+      default:
+        setAlign("start");
+        break;
+    }
+  };
 
   // ***************************************
   // Drop logic
@@ -120,7 +136,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
                   ? "alignStartV"
                   : "alignStart"}
           styles={{ color: iconColor, cursor: (droppable ?? editorMode) && align && !!React.Children.count(children) ? "pointer" : "default" }}
-          onClick={(droppable ?? editorMode) && align && !!React.Children.count(children) ? onAlignChange : undefined}
+          onClick={(droppable ?? editorMode) && align && !!React.Children.count(children) ? () => onAlignChange(align, setAlign) : undefined}
         />
       </div>
     </div>

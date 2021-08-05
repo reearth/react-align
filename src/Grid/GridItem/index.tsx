@@ -49,11 +49,11 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   id,
   index,
   extendable,
-  // extended, <------------------------ NEED TO UNCOMMENT OUT !!!!!!!!!!!!!!!!!!
+  extended,
   draggable,
   onReorder,
   onMoveArea,
-  // onExtend, <----------------------- NEED TO UNCOMMENT !!!!!!!!!!!!
+  onExtend,
   // Passed from parent (aka GridArea).
   location,
   end,
@@ -68,13 +68,11 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   const { editorMode }: EditorModeContextType = useContext();
 
   const [isHovered, setHovered] = useState(false);
-  const [isExpanded, setExpanded] = useState(false); // TO DELETE. Need to replace isExpanded in below styles with  !!!!!!!!!!!!!!!!!!!!!!!
+  console.log(extended, "extended")
 
   const handleExtend = () => {
-    if (!extendable) return;
-    // if (!expandable || !onExtend) return; <--------change to
-    setExpanded(!isExpanded); // TO DELETE !!!!!!!!!!!!!!!!!!!!!!!
-    // onExtend(id); <------- change to
+    if (!extendable || !onExtend) return;
+    onExtend(id);
     setHovered(false);
   };
 
@@ -149,22 +147,22 @@ const GridItem: React.FC<ItemProps<Location>> = ({
     () => ({
       opacity: isDragging ? 0.5 : 1,
       minHeight: isHovered && editorMode ? "40px" : undefined,
-      width: !vertical && isExpanded ? "100%" : undefined,
+      width: !vertical && extended ? "100%" : undefined,
       minWidth: isHovered && editorMode ? extendable ? "70px" : "30px" : undefined,
-      height: vertical && isExpanded ? "100%" : undefined,
+      height: vertical && extended ? "100%" : undefined,
     }),
-    [isDragging, isHovered, isExpanded, vertical],
+    [isDragging, isHovered, extended, vertical],
   );
 
   const containerStyle: CSSProperties = useMemo(() => ({
     position: "relative",
     display: "inline-block",
     minHeight: isHovered && editorMode ? "40px" : undefined,
-    width: !vertical && isExpanded ? "100%" : undefined,
+    width: !vertical && extended ? "100%" : undefined,
     minWidth: isHovered && editorMode ? extendable ? "70px" : "30px" : undefined,
-    height: vertical && isExpanded ? "100%" : undefined,
+    height: vertical && extended ? "100%" : undefined,
   }),
-    [isHovered, isExpanded, vertical],
+    [isHovered, extended, vertical],
   );
 
   const overlayStyles: CSSProperties = {
@@ -189,7 +187,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   // ***************************************
 
   const childrenWithParentProps = React.Children.map(
-    children, child => React.cloneElement(child as React.ReactElement<{ extended: boolean }>, { extended: isExpanded })
+    children, child => React.cloneElement(child as React.ReactElement<{ extended: boolean }>, { extended: extended })
   );
 
   return (
