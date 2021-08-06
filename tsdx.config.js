@@ -3,7 +3,7 @@ const cssnano = require('cssnano');
 const svg = require("rollup-plugin-svg");
 
 module.exports = {
-    rollup(config, options) {
+    rollup(config) {
         config.plugins.push(
             postcss({
                 plugins: [
@@ -11,8 +11,8 @@ module.exports = {
                         preset: 'default',
                     }),
                 ],
-                // only write out CSS for the first bundle (avoids pointless extra files):
-                extract: !!options.writeMeta,
+                inject: true,
+                extract: false
             }),
             svg()
         );
