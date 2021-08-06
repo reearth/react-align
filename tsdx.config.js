@@ -1,6 +1,6 @@
 const postcss = require('rollup-plugin-postcss');
 const cssnano = require('cssnano');
-const svg = require("rollup-plugin-svg");
+const svgr = require("@svgr/rollup").default
 
 module.exports = {
     rollup(config) {
@@ -14,7 +14,7 @@ module.exports = {
                 inject: true,
                 extract: false
             }),
-            svg()
+            svgr()
         );
         return config;
     },

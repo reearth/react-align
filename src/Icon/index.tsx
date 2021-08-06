@@ -1,6 +1,5 @@
 import React, { CSSProperties } from "react";
 import { css } from "glamor";
-import { ReactSVG } from "react-svg";
 
 import Icons from "./icons";
 
@@ -25,24 +24,15 @@ const IconStyles = (size?: number) => css({
 })
 
 const Icon: React.FC<IconProps> = ({ className, name, size, onClick, styles }) => {
-    if (typeof name === "string") {
-        const LocalIconComponent = Icons[name as Icons];
-        if (LocalIconComponent) {
-            return (
-                <ReactSVG
-                    className={className}
-                    src={LocalIconComponent}
-                    {...IconStyles(size)}
-                    style={styles}
-                    onClick={onClick}
-                />
-            );
-        }
-    }
-
+    const LocalIconComponent = Icons[name as Icons];
     return (
-        <ReactSVG className={className} src={name} />
-    )
+        <LocalIconComponent
+            className={className}
+            {...IconStyles(size)}
+            style={styles}
+            onClick={onClick}
+        />
+    );
 };
 
 export default Icon;
