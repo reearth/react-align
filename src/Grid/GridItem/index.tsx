@@ -68,7 +68,6 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   const { editorMode }: EditorModeContextType = useContext();
 
   const [isHovered, setHovered] = useState(false);
-  console.log(extended, "extended")
 
   const handleExtend = () => {
     if (!extendable || !onExtend) return;
