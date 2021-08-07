@@ -7,7 +7,7 @@ import Icon from "../../Icon";
 
 import "../grid.css";
 
-export type Location = { section?: string, area?: string };
+export type Location = { zone?: string, section?: string, area?: string };
 
 export type ItemProps<T extends Location> = {
   className?: string;
