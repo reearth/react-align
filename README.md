@@ -46,6 +46,7 @@ GridItem's id, index, onReorder and onMoveArea are necessary for the drag n drop
 
 ```tsx
     type onReorder: (
+        id?: string,
         originalLocation?: { section: string, area: string },
         currentIndex?: number,
         hoverIndex?: number

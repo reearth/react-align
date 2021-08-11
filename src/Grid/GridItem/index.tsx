@@ -17,6 +17,7 @@ export type ItemProps<T extends Location> = {
   extended?: boolean;
   draggable?: boolean; // Optional to override or not use editorMode context. **Needs to be accompanied with GridAreas droppable prop**
   onReorder: (
+    id?: string,
     originalLocation?: T,
     currentIndex?: number,
     hoverIndex?: number
@@ -127,7 +128,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
         return;
       }
 
-      onReorder(location, dragIndex, hoverIndex);
+      onReorder(id, location, dragIndex, hoverIndex);
 
       item.index = hoverIndex;
     },
