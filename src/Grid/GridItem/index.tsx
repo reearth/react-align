@@ -106,7 +106,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       if (!clientOffset) return;
 
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      const hoverClientX = clientOffset.x = hoverBoundingRect.left;
+      const hoverClientX = clientOffset.x - hoverBoundingRect.left;
 
       if (vertical) {
         if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
