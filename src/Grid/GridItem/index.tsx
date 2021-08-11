@@ -99,8 +99,8 @@ const GridItem: React.FC<ItemProps<Location>> = ({
 
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
 
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.bottom) / 2;
-      const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.right) / 2;
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
 
       const clientOffset = monitor.getClientOffset();
       if (!clientOffset) return;
@@ -108,29 +108,25 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
       const hoverClientX = clientOffset.x = hoverBoundingRect.left;
 
-      // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
+      if (vertical) {
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+          return;
+        }
+
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+          return;
+        }
+      } else {
+        if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
+          return;
+        }
+
+        if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
+          return;
+        }
       }
 
-      // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
-
-      // Dragging right
-      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
-        return;
-      }
-
-      // Dragging left
-      if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
-        return;
-      }
-
-      onReorder(id, location, dragIndex, hoverIndex);
-
-      item.index = hoverIndex;
+      onReorder(item.id, location, dragIndex, hoverIndex);
     },
   });
 
