@@ -27,7 +27,7 @@ export type ItemProps<T extends Location> = {
     dropLocation?: T,
     originalLocation?: T
   ) => void;
-  onExtend?: (id: string) => void;
+  onExtend?: (id: string, extended?: boolean) => void;
   // Props passed from parent.
   location?: T;
   end?: boolean;
@@ -72,7 +72,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
 
   const handleExtend = () => {
     if (!extendable || !onExtend) return;
-    onExtend(id);
+    onExtend(id, extended);
     setHovered(false);
   };
 

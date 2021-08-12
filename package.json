@@ -1,6 +1,6 @@
 {
   "name": "reearth-realign",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "author": "KaWaite",
   "module": "dist/realign.esm.js",
   "license": "MIT",
