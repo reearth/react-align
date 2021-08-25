@@ -1,4 +1,4 @@
-# Re:Align
+# React Align
 
 A highly customizable and powerful drag 'n drop align system for React.
 
