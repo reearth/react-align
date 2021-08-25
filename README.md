@@ -3,7 +3,7 @@
 A highly customizable and powerful drag 'n drop align system for React.
 
 - Build your own alignment grid as simple or complex as you need
-- Built-in, *opt-in* **Editor Mode** through React's context API
+- Toggleable editor mode
 - Customizable features and styles to integrate into your app effectively
 - Fully written in TypeScript
 
@@ -61,32 +61,11 @@ GridItem's id, index, onReorder and onMoveArea are necessary for the drag n drop
 Finally, the min/max for width and height is expected to set the GridItem container that will dynamically shrink when space is limited or if you choose to allow your GridItems to extend.
 
 ## Editor mode
-Re:Align comes with a context provider and more that allows for a toggleable Editor Mode that enables and disables the editing functionality of Re:Align. 
+Re:Align's editor mode is easily toggleable by passing an *enabled* prop to the GridWrapper. 
 
 <img width="854" alt="Screen Shot 2021-06-24 at 18 15 51" src="https://user-images.githubusercontent.com/34051327/123240889-ad1b1a80-d51b-11eb-9a7d-8f9e75a9b9e0.png">
 
-The general idea of use is to wrap the part of your app you want aligned as well as any components like a toggle button in the EditorModeContextProvider component so that they can all access the same context.
-
-Something like this:
-```tsx
-<EditorModeContextProvider>
-    <Button>Editor Mode Toggle</Button>
-    <GridWrapper>
-        ...
-    </GridWrapper>
-</EditorModeContextProvider>
-```
-Then, inside the Button you have two ways to manipulate the context. First is through the ContextConsumer HOC that injects the context into your component. This approach adds it as a prop and keeps everything tidy. Or you can use the useContext function that you can pull the context out through destructuring and use within a component however you like.
-
-```tsx
-const ButtonWrapper = () => {
-    const ContextedButton = ContextConsumer(Button);
-    return (
-        <ContextedButton />
-    );
-};
-```
-(If you want to use your own method, pass *draggable* into GridItem and *droppable* into GridArea to enable drag 'n drop functionality directly)
+(If you want to use your own method and/or avoid style changes between editor mode and non-editor mode, pass *draggable* into GridItem and *droppable* into GridArea to enable drag 'n drop functionality directly)
 
 Enjoy!
 
