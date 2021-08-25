@@ -1,7 +1,7 @@
 import React, { CSSProperties, useMemo } from "react";
 import { useDrop, DropTargetMonitor } from "react-dnd";
 import { Location, ItemProps } from "../GridItem";
-import { useContext, EditorModeContextType } from "../../contextProvider";
+import { useEditorMode } from "../../context";
 import Icon from "../../Icon";
 import "../grid.css";
 
@@ -15,7 +15,7 @@ export type AreaProps<T extends Location> = {
   reverse?: boolean;
   stretch?: boolean;
   end?: boolean;
-  droppable?: boolean; // optional to override or not use editorMode context **Needs to be accompanied with GridItems draggable prop**
+  droppable?: boolean; // optional to override editorMode context (enabled param passed to GridWrapper) **Needs to be accompanied with GridItems draggable prop**
   align?: Alignments;
   setAlign?: React.Dispatch<React.SetStateAction<Alignments>>;
   location: T;
@@ -41,7 +41,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
   editorStyles,
   iconColor = "#FFFFFF"
 }) => {
-  const { editorMode }: EditorModeContextType = useContext();
+  const { enabled } = useEditorMode();
 
   const onAlignChange = (align?: Alignments, setAlign?: React.Dispatch<React.SetStateAction<Alignments>>) => {
     if (!align || !setAlign) return;
@@ -80,18 +80,18 @@ const GridArea: React.FC<AreaProps<Location>> = ({
       right: vertical ? !end ? 0 : undefined : "50%",
       bottom: !vertical && !end ? 0 : vertical ? "50%" : undefined,
       top: vertical ? "50%" : end ? 0 : undefined,
-      opacity: (droppable ?? editorMode) && align ? 1 : 0,
+      opacity: (droppable ?? enabled) && align ? 1 : 0,
       transition: "all 0.5s ease-in-out"
-    }), [vertical, end, droppable, editorMode, align]);
+    }), [vertical, end, droppable, enabled, align]);
 
   const mainStyles: CSSProperties = useMemo(
     () => ({
       opacity: isOver ? 0.8 : 1,
-      minHeight: !React.Children.count(children) && !editorMode ? "0px" : "26px",
-      minWidth: !React.Children.count(children) && !editorMode ? "0px" : "46px"
-    }), [isOver, children, editorMode]);
+      minHeight: !React.Children.count(children) && !enabled ? "0px" : "26px",
+      minWidth: !React.Children.count(children) && !enabled ? "0px" : "46px"
+    }), [isOver, children, enabled]);
 
-  const stylesFromProps: CSSProperties | undefined = editorMode ? editorStyles : styles;
+  const stylesFromProps: CSSProperties | undefined = enabled ? editorStyles : styles;
   // ***************************************
 
   // Rebuilds the GridItem children to receive their parent GridArea's 'end' and 'vertical' values.
@@ -117,7 +117,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
             ? "horizontal-r"
             : "horizontal"
         }
-      ${editorMode ? "area-transition-in" : "area-transition-out"}
+      ${enabled ? "area-transition-in" : "area-transition-out"}
       `}
       style={{ ...mainStyles, ...stylesFromProps }}>
       {childrenWithParentProps}
@@ -135,8 +135,8 @@ const GridArea: React.FC<AreaProps<Location>> = ({
                 : vertical
                   ? "alignStartV"
                   : "alignStart"}
-          styles={{ color: iconColor, cursor: (droppable ?? editorMode) && align && !!React.Children.count(children) ? "pointer" : "default" }}
-          onClick={(droppable ?? editorMode) && align && !!React.Children.count(children) ? () => onAlignChange(align, setAlign) : undefined}
+          styles={{ color: iconColor, cursor: (droppable ?? enabled) && align && !!React.Children.count(children) ? "pointer" : "default" }}
+          onClick={(droppable ?? enabled) && align && !!React.Children.count(children) ? () => onAlignChange(align, setAlign) : undefined}
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, CSSProperties, useState } from "react";
 import { useDrag, useDrop, DragSourceMonitor } from "react-dnd";
-import { useContext, EditorModeContextType } from "../../contextProvider";
+import { useEditorMode } from "../../context";
 import { DragItem } from "../interfaces";
 
 import Icon from "../../Icon";
@@ -66,7 +66,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   iconColor = "rgb(255, 255, 255)"
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { editorMode }: EditorModeContextType = useContext();
+  const { enabled } = useEditorMode();
 
   const [isHovered, setHovered] = useState(false);
 
@@ -86,7 +86,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       };
     },
     hover(item: DragItem, monitor) {
-      if (!ref.current || !editorMode || draggable) {
+      if (!ref.current || !enabled || draggable) {
         return;
       }
 
@@ -133,7 +133,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   const [{ isDragging }, drag, preview] = useDrag({
     type: ItemTypes.IT3M,
     item: { id, index },
-    canDrag: draggable ?? editorMode,
+    canDrag: draggable ?? enabled,
     end: (item, monitor) => {
       const dropResults: { location: Location } | null = monitor.getDropResult();
 
@@ -151,14 +151,14 @@ const GridItem: React.FC<ItemProps<Location>> = ({
 
   // ***************************************
   // External styles for editorMode or the vanilla grid
-  const stylesFromProps: CSSProperties | undefined = editorMode ? editorStyles : styles;
+  const stylesFromProps: CSSProperties | undefined = enabled ? editorStyles : styles;
 
   const itemStyles: CSSProperties = useMemo(
     () => ({
       opacity: isDragging ? 0.5 : 1,
-      minHeight: isHovered && editorMode ? "40px" : undefined,
+      minHeight: isHovered && enabled ? "40px" : undefined,
       width: !vertical && extended ? "100%" : undefined,
-      minWidth: isHovered && editorMode ? extendable ? "70px" : "30px" : undefined,
+      minWidth: isHovered && enabled ? extendable ? "70px" : "30px" : undefined,
       height: vertical && extended ? "100%" : undefined,
     }),
     [isDragging, isHovered, extended, vertical],
@@ -167,9 +167,9 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   const containerStyle: CSSProperties = useMemo(() => ({
     position: "relative",
     display: "inline-block",
-    minHeight: isHovered && editorMode ? "40px" : undefined,
+    minHeight: isHovered && enabled ? "40px" : undefined,
     width: !vertical && extended ? "100%" : undefined,
-    minWidth: isHovered && editorMode ? extendable ? "70px" : "30px" : undefined,
+    minWidth: isHovered && enabled ? extendable ? "70px" : "30px" : undefined,
     height: vertical && extended ? "100%" : undefined,
   }),
     [isHovered, extended, vertical],
@@ -210,7 +210,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}>
       <div style={containerStyle}>
-        {(draggable ?? editorMode) && isHovered && (
+        {(draggable ?? enabled) && isHovered && (
           <div style={overlayStyles}>
             <div style={buttonStyles}>
               <div ref={drag}>

@@ -1,5 +1,5 @@
 import React, { CSSProperties } from "react";
-import { useContext, EditorModeContextType } from "../../contextProvider";
+import { useEditorMode } from "../../context";
 import "../grid.css";
 
 export type SectionProps = {
@@ -22,8 +22,8 @@ const GridSection: React.FC<SectionProps> = ({
   styles,
   editorStyles,
   children }) => {
-  const { editorMode }: EditorModeContextType = useContext();
-  const stylesFromProps: CSSProperties | undefined = editorMode ? editorStyles : styles;
+  const { enabled } = useEditorMode();
+  const stylesFromProps: CSSProperties | undefined = enabled ? editorStyles : styles;
 
   return (
     <div

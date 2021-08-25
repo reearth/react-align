@@ -1,11 +1,12 @@
 import React, { CSSProperties } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useContext, EditorModeContextType } from "../../contextProvider";
+import { EditorModeContext } from "../../context";
 import "../grid.css";
 
 export type WrapperProps = {
   className?: string;
+  enabled?: boolean;
   vertical?: boolean;
   stretch?: boolean;
   // Extra customizable parts only for the really picky
@@ -13,18 +14,16 @@ export type WrapperProps = {
   editorStyles?: CSSProperties;
 };
 
-const GridWrapper: React.FC<WrapperProps> = ({ className, vertical, stretch, styles, editorStyles, children }) => {
-  const { editorMode }: EditorModeContextType = useContext();
-
-  return (
-    <div
-      className={`wrapper ${className} ${vertical && "vertical"} ${stretch && "stretch"}`}
-      style={editorMode ? editorStyles : styles}>
-      <DndProvider backend={HTML5Backend}>
+const GridWrapper: React.FC<WrapperProps> = ({ className, enabled, vertical, stretch, styles, editorStyles, children }) => (
+  <div
+    className={`wrapper ${className} ${vertical && "vertical"} ${stretch && "stretch"}`}
+    style={enabled ? editorStyles : styles}>
+    <DndProvider backend={HTML5Backend}>
+      <EditorModeContext.Provider value={{ enabled }}>
         {children}
-      </DndProvider>
-    </div>
-  )
-};
+      </EditorModeContext.Provider>
+    </DndProvider>
+  </div>
+);
 
 export default GridWrapper;
