@@ -1,8 +1,8 @@
-import React, { CSSProperties } from "react";
-import { useEditorMode } from "../../context";
-import "../grid.css";
+import React, { CSSProperties } from 'react';
+import { useEditorMode } from '../../context';
+import '../grid.css';
 
-export type SectionProps = {
+export type GridSectionProps = {
   className?: string;
   horizontal?: boolean;
   stretch?: boolean;
@@ -13,7 +13,7 @@ export type SectionProps = {
   editorStyles?: CSSProperties;
 };
 
-const GridSection: React.FC<SectionProps> = ({
+const GridSection: React.FC<GridSectionProps> = ({
   className,
   horizontal,
   stretch,
@@ -21,18 +21,26 @@ const GridSection: React.FC<SectionProps> = ({
   fixedHeight,
   styles,
   editorStyles,
-  children }) => {
+  children,
+}) => {
   const { enabled } = useEditorMode();
-  const stylesFromProps: CSSProperties | undefined = enabled ? editorStyles : styles;
+  const stylesFromProps: CSSProperties | undefined = enabled
+    ? editorStyles
+    : styles;
 
   return (
     <div
-      className={`section ${className} ${horizontal && "horizontal"} ${stretch && "stretch"}`}
-      style={{ ...stylesFromProps, height: fixedHeight + "px", width: fixedWidth + "px" }}
+      className={`section ${className} ${horizontal &&
+        'horizontal'} ${stretch && 'stretch'}`}
+      style={{
+        ...stylesFromProps,
+        height: fixedHeight + 'px',
+        width: fixedWidth + 'px',
+      }}
     >
       {children}
     </div>
-  )
+  );
 };
 
 export default GridSection;
