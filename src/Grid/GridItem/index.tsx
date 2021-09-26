@@ -29,7 +29,7 @@ export type ItemProps<T = unknown> = {
   onMoveArea: (
     currentItem: string,
     dropLocation: T,
-    originalLocation?: T
+    originalLocation: T
   ) => void;
   onExtend?: (id: string, extended: boolean) => void;
   // Props passed from parent.
