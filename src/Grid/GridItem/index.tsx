@@ -1,4 +1,10 @@
-import React, { useMemo, useRef, CSSProperties, useState } from 'react';
+import React, {
+  useMemo,
+  useRef,
+  CSSProperties,
+  useState,
+  PropsWithChildren,
+} from 'react';
 import { useDrag, useDrop, DragSourceMonitor } from 'react-dnd';
 import { useEditorMode } from '../../context';
 import { DragItem } from '../interfaces';
@@ -42,7 +48,7 @@ export const ItemType = {
   GROUP: 'react-align_group',
 };
 
-const GridItem: React.FC<ItemProps<Location>> = ({
+export default function GridItem<T = unknown>({
   className,
   children,
   id,
@@ -62,7 +68,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
   editorStyles,
   iconSize,
   iconColor = 'rgb(255, 255, 255)',
-}) => {
+}: PropsWithChildren<ItemProps<T>>) {
   const ref = useRef<HTMLDivElement>(null);
   const { enabled } = useEditorMode();
 
@@ -136,7 +142,7 @@ const GridItem: React.FC<ItemProps<Location>> = ({
     canDrag: draggable ?? enabled,
     end: (item, monitor) => {
       const dropResults: {
-        location: Location;
+        location: T;
       } | null = monitor.getDropResult();
 
       if (dropResults) {
@@ -247,6 +253,4 @@ const GridItem: React.FC<ItemProps<Location>> = ({
       </div>
     </div>
   );
-};
-
-export default GridItem;
+}

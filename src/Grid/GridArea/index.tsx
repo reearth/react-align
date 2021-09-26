@@ -1,4 +1,9 @@
-import React, { CSSProperties, useCallback, useMemo } from 'react';
+import React, {
+  CSSProperties,
+  PropsWithChildren,
+  useCallback,
+  useMemo,
+} from 'react';
 import { useDrop, DropTargetMonitor } from 'react-dnd';
 import { ItemProps } from '../GridItem';
 import { useEditorMode } from '../../context';
@@ -25,7 +30,7 @@ export type AreaProps<T = unknown> = {
   onAlignChange?: (a: Alignment) => void;
 };
 
-const GridArea: React.FC<AreaProps<Location>> = ({
+export default function GridArea<T = unknown>({
   className,
   vertical,
   reverse,
@@ -40,7 +45,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
   styles,
   editorStyles,
   iconColor = '#FFFFFF',
-}) => {
+}: PropsWithChildren<AreaProps<T>>) {
   const { enabled } = useEditorMode();
 
   const handleAlignChange = useCallback(
@@ -103,7 +108,7 @@ const GridArea: React.FC<AreaProps<Location>> = ({
   // Rebuilds the GridItem children to receive their parent GridArea's 'end' and 'vertical' values.
   // Used to know where to align the overlay buttons (end) and how to extend the GridItems (vertical).
   const childrenWithParentProps = React.Children.map(children, child =>
-    React.cloneElement(child as React.ReactElement<ItemProps<Location>>, {
+    React.cloneElement(child as React.ReactElement<ItemProps<T>>, {
       end,
       vertical,
       location,
@@ -172,6 +177,4 @@ const GridArea: React.FC<AreaProps<Location>> = ({
       </div>
     </div>
   );
-};
-
-export default GridArea;
+}
