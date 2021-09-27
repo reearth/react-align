@@ -145,7 +145,7 @@ export default function GridItem<T = unknown>({
         location: T;
       } | null = monitor.getDropResult();
 
-      if (dropResults) {
+      if (dropResults && dropResults.location !== location) {
         onMoveArea(item.id, dropResults.location, location);
       }
     },
