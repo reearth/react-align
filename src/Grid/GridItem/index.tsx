@@ -73,6 +73,7 @@ export default function GridItem<T = unknown>({
   const { enabled } = useEditorMode();
 
   const [isHovered, setHovered] = useState(false);
+  const dragIndexRef = useRef<number | undefined>();
 
   const handleExtend = () => {
     if (!extendable || !onExtend) return;
@@ -132,27 +133,36 @@ export default function GridItem<T = unknown>({
         }
       }
 
-      onReorder(item.id, location, dragIndex, hoverIndex);
+      dragIndexRef.current = dragIndex;
     },
-  });
-
-  const [{ isDragging }, drag, preview] = useDrag({
-    type: ItemType.ITEM,
-    item: { id, index },
-    canDrag: draggable ?? enabled,
-    end: (item, monitor) => {
-      const dropResults: {
-        location: T;
-      } | null = monitor.getDropResult();
-
-      if (dropResults && dropResults.location !== location) {
-        onMoveArea(item.id, dropResults.location, location);
+    drop(item) {
+      if (dragIndexRef.current !== undefined) {
+        onReorder(item.id, location, dragIndexRef.current, index);
+        dragIndexRef.current = undefined;
       }
     },
-    collect: (monitor: DragSourceMonitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
   });
+
+  const [{ isDragging }, drag, preview] = useDrag(
+    {
+      type: ItemType.ITEM,
+      item: { id, index },
+      canDrag: draggable ?? enabled,
+      end: (item, monitor) => {
+        const dropResults: {
+          location: T;
+        } | null = monitor.getDropResult();
+
+        if (dropResults && dropResults.location !== location) {
+          onMoveArea(item.id, dropResults.location, location);
+        }
+      },
+      collect: (monitor: DragSourceMonitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+    },
+    [dragIndexRef]
+  );
 
   preview(drop(ref));
   // ***************************************
