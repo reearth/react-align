@@ -19,7 +19,8 @@ export type ItemProps<T = unknown> = {
   index: number;
   extendable?: boolean;
   extended?: boolean;
-  draggable?: boolean; // Optional to override or not use editorMode context. **Needs to be accompanied with GridAreas droppable prop**
+  /** Optional to override or not use editorMode context. **Needs to be accompanied with GridAreas droppable prop** */
+  draggable?: boolean;
   onReorder?: (
     id: string,
     originalLocation: T,
@@ -32,11 +33,11 @@ export type ItemProps<T = unknown> = {
     originalLocation: T
   ) => void;
   onExtend?: (id: string, extended: boolean) => void;
-  // Props passed from parent.
+  /** Props passed from parent. */
   location: T;
   end?: boolean;
   vertical?: boolean;
-  // Extra customizable parts only for the really picky.
+  /** Extra customizable parts only for the really picky. */
   styles?: CSSProperties;
   editorStyles?: CSSProperties;
   iconSize?: number;
@@ -135,34 +136,29 @@ export default function GridItem<T = unknown>({
 
       dragIndexRef.current = dragIndex;
     },
-    drop(item) {
-      if (dragIndexRef.current !== undefined) {
+  });
+
+  const [{ isDragging }, drag, preview] = useDrag({
+    type: ItemType.ITEM,
+    item: { id, index },
+    canDrag: draggable ?? enabled,
+    end: (item, monitor) => {
+      const dropResults: {
+        location: T;
+      } | null = monitor.getDropResult();
+      if (!dropResults) return;
+
+      if (dropResults.location !== location) {
+        onMoveArea?.(item.id, dropResults.location, location);
+      } else if (dragIndexRef.current !== undefined) {
         onReorder?.(item.id, location, dragIndexRef.current, index);
         dragIndexRef.current = undefined;
       }
     },
+    collect: (monitor: DragSourceMonitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
   });
-
-  const [{ isDragging }, drag, preview] = useDrag(
-    {
-      type: ItemType.ITEM,
-      item: { id, index },
-      canDrag: draggable ?? enabled,
-      end: (item, monitor) => {
-        const dropResults: {
-          location: T;
-        } | null = monitor.getDropResult();
-
-        if (dropResults && dropResults.location !== location) {
-          onMoveArea?.(item.id, dropResults.location, location);
-        }
-      },
-      collect: (monitor: DragSourceMonitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
-    },
-    [dragIndexRef]
-  );
 
   preview(drop(ref));
   // ***************************************
