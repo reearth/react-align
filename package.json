@@ -1,8 +1,8 @@
 {
   "name": "react-align",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "author": "KaWaite",
-  "module": "dist/realign.esm.js",
+  "module": "dist/react-align.esm.js",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -40,11 +40,11 @@
   },
   "size-limit": [
     {
-      "path": "dist/realign.cjs.production.min.js",
+      "path": "dist/react-align.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/realign.esm.js",
+      "path": "dist/react-align.esm.js",
       "limit": "10 KB"
     }
   ],
@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "glamor": "^2.20.40",
-    "react-dnd": "^14.0.2",
-    "react-dnd-html5-backend": "^14.0.0"
+    "react-dnd": "^14.0.4",
+    "react-dnd-html5-backend": "^14.0.2"
   }
 }

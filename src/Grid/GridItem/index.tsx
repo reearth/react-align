@@ -20,13 +20,13 @@ export type ItemProps<T = unknown> = {
   extendable?: boolean;
   extended?: boolean;
   draggable?: boolean; // Optional to override or not use editorMode context. **Needs to be accompanied with GridAreas droppable prop**
-  onReorder: (
+  onReorder?: (
     id: string,
     originalLocation: T,
     currentIndex: number,
     hoverIndex: number
   ) => void;
-  onMoveArea: (
+  onMoveArea?: (
     currentItem: string,
     dropLocation: T,
     originalLocation: T
@@ -137,7 +137,7 @@ export default function GridItem<T = unknown>({
     },
     drop(item) {
       if (dragIndexRef.current !== undefined) {
-        onReorder(item.id, location, dragIndexRef.current, index);
+        onReorder?.(item.id, location, dragIndexRef.current, index);
         dragIndexRef.current = undefined;
       }
     },
@@ -154,7 +154,7 @@ export default function GridItem<T = unknown>({
         } | null = monitor.getDropResult();
 
         if (dropResults && dropResults.location !== location) {
-          onMoveArea(item.id, dropResults.location, location);
+          onMoveArea?.(item.id, dropResults.location, location);
         }
       },
       collect: (monitor: DragSourceMonitor) => ({
