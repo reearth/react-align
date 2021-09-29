@@ -1,6 +1,6 @@
 {
   "name": "react-align",
-  "version": "1.1.7",
+  "version": "2.0.0",
   "author": "KaWaite",
   "module": "dist/react-align.esm.js",
   "license": "MIT",
@@ -53,6 +53,7 @@
     "@size-limit/preset-small-lib": "^4.11.0",
     "@svgr/rollup": "^5.5.0",
     "@types/react": "^17.0.8",
+    "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^17.0.5",
     "babel-loader": "^8.2.2",
     "cssnano": "^5.0.7",
@@ -69,7 +70,6 @@
   },
   "dependencies": {
     "glamor": "^2.20.40",
-    "react-dnd": "^14.0.4",
-    "react-dnd-html5-backend": "^14.0.2"
+    "react-beautiful-dnd": "^13.1.0"
   }
 }

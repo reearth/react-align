@@ -1,43 +1,128 @@
-import { useCallback, useState } from "react";
-import { GridWrapper, GridSection, GridArea, GridItem } from "react-align";
+import { useState } from "react";
+import { GridWrapper, GridSection, GridArea, GridItem, Alignment } from "react-align/src/index";
+
+type Item = { id: string, location: string, index: number, extended: boolean; extendable: boolean; };
+
+const initItems: Item[] = [
+  { id: "A", location: "1", index: 0, extended: false, extendable: false},
+  { id: "B", location: "1", index: 1, extended: false, extendable: false},
+  { id: "C", location: "2", index: 0, extended: true, extendable: true},
+  { id: "D", location: "2", index: 1, extended: false, extendable: false},
+];
+
+const initAlignments: Record<string, Alignment> = {
+  "1": "start",
+  "2": "start",
+  "3": "start",
+  "4": "start",
+  "6": "start",
+  "7": "start",
+  "8": "start",
+  "9": "start",
+}
+
+const hoz = (l: string) => l === "4" || l === "6";
+const ver = (l: string) => l === "2" || l === "8";
+const ItemCompoent = (item: Item, i: number) => (
+  <GridItem id={item.id} index={i} key={item.id} extendable={item.extendable} extended={item.extended}>
+    <div
+      style={{
+        fontSize: "24px",
+        width: item.extended && hoz(item.location) ? "100%" : "200px",
+        height: item.extended && ver(item.location) ? "100%" : "50px",
+        background: "#ddd",
+        padding: "10px",
+        boxSizing: "border-box"
+      }}>{item.id}</div>
+  </GridItem>
+)
 
 function App() {
   const [edit, setEdit] = useState(false);
-  const handleReorder = useCallback((id: string, originalLocation: number, currentIndex: number, hoverIndex: number) => {
-    console.log('reorder', id, originalLocation, currentIndex, hoverIndex);
-  }, []);
-  const handleMoveArea = useCallback((id: string, dropLocation: number, originalLocation: number) => {
-    console.log('moveArea', id, dropLocation, originalLocation);
-  }, []);
-  const handleExtend = useCallback((id: string, extended: boolean) => {
-    console.log('extended', id, extended);
-  }, []);
+  const [items, setItems] = useState(initItems);
+  const [alignments, setAlignments] = useState(initAlignments);
 
   return (
-    <GridWrapper enabled={edit}>
+    <GridWrapper
+      editing={edit}
+      onMove={(...args) => {
+        console.log('move', ...args);
+        setItems(items => {
+          const target = items.find(i => i.id === args[0]);
+          if (!target) return items;
+          const sibilings = items.filter(i => i.location === args[1]);
+          if (args[1] === args[3]) {
+            sibilings.splice(sibilings.findIndex(i => i.id === args[0]), 1);
+          }
+          sibilings.splice(args[2], 0, target);
+          target.location = args[1];
+          sibilings.forEach((s, i) => {
+            s.index = i;
+          });
+          return [...items];
+        });
+      }}
+      onAlignmentChange={(...args) => {
+        console.log('alignmentChange', ...args);
+        setAlignments(a => ({
+          ...a,
+          [args[0]]: args[1]
+        }));
+      }}
+      onExtend={(...args) => {
+        console.log('extend', ...args);
+        setItems(items => {
+          const target = items.find(i => i.id === args[0]);
+          if (!target) return items;
+          target.extended = args[1];
+          return [...items];
+        });
+      }}>
       <GridSection>
-        <GridArea location={1} editorStyles={{ background: "red" }}>
-          <GridItem id="a" location={1} index={0} onReorder={handleReorder} onMoveArea={handleMoveArea} onExtend={handleExtend}>
-            <div style={{ width: "200px", height: "50px", border: "1px solid green", background: "#fff" }}>a</div>
-          </GridItem>
-          <GridItem id="b" location={1} index={1} onReorder={handleReorder} onMoveArea={handleMoveArea} onExtend={handleExtend}>
-            <div style={{ width: "200px", height: "50px", border: "1px solid green", background: "#fff" }}>b</div>
-          </GridItem>
-        </GridArea>
-        <GridArea location={2} vertical stretch editorStyles={{ background: "blue" }} />
-        <GridArea location={3} end editorStyles={{ background: "red" }} />
+        {["1", "2", "3"].map(l => (
+          <GridArea
+            id={l}
+            key={l}
+            align={alignments[l]}
+            end={l === "3"}
+            vertical={l === "2"}
+            stretch={l === "2"}
+            editorStyle={{ background: l === "2" ? "blue" : "red" }}>
+            {items.filter(i => i.location === l).sort((a, b) => a.index - b.index).map(ItemCompoent)}
+          </GridArea>
+        ))}
       </GridSection>
       <GridSection stretch>
-        <GridArea location={4} editorStyles={{ background: "red" }} />
-        <div style={{ flex: "auto" }}>
-          <p><button onClick={() => setEdit(e => !e)}>{edit ? "Finish" : "Start"} editing</button></p>
-        </div>
-        <GridArea location={6} end  editorStyles={{ background: "red" }}/>
+        {["4", "5", "6"].map(l => l == "5" ? (
+          <div
+            key={l}
+            style={{ flex: "auto" }}>
+            <button onClick={() => setEdit(e => !e)}>{edit ? "Finish" : "Start"} editing</button>
+          </div>
+        ) : (
+          <GridArea
+            id={l}
+            key={l}
+            align={alignments[l]}
+            end={l === "6"}
+            editorStyle={{ background: "red" }}>
+            {items.filter(i => i.location === l).sort((a, b) => a.index - b.index).map(ItemCompoent)}
+          </GridArea>
+        ))}
       </GridSection>
       <GridSection>
-        <GridArea location={7} reverse end editorStyles={{ background: "red" }} />
-        <GridArea location={8} end vertical stretch editorStyles={{ background: "blue" }} />
-        <GridArea location={9} reverse end editorStyles={{ background: "red" }} />
+        {["7", "8", "9"].map(l => (
+          <GridArea
+            id={l}
+            key={l}
+            align={alignments[l]}
+            end
+            vertical={l === "8"}
+            stretch={l === "8"}
+            editorStyle={{ background: l === "8" ? "blue" : "red" }}>
+            {items.filter(i => i.location === l).sort((a, b) => a.index - b.index).map(ItemCompoent)}
+          </GridArea>
+        ))}
       </GridSection>
     </GridWrapper>
   )

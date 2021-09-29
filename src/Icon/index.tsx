@@ -9,8 +9,8 @@ export type IconProps = {
   className?: string;
   name: string | Icons;
   size?: number;
+  style?: CSSProperties;
   onClick?: () => void;
-  styles?: CSSProperties;
 };
 
 const IconStyles = (size?: number) =>
@@ -28,15 +28,15 @@ const Icon: React.FC<IconProps> = ({
   className,
   name,
   size,
+  style,
   onClick,
-  styles,
 }) => {
   const LocalIconComponent = Icons[name as Icons];
   return (
     <LocalIconComponent
       className={className}
       {...IconStyles(size)}
-      style={styles}
+      style={style}
       onClick={onClick}
     />
   );

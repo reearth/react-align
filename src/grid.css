@@ -1,0 +1,80 @@
+/* Default component styles */
+.wrapper {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.area {
+  display: flex;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  border-radius: 8px;
+  position: relative;
+}
+
+.area-transition-in {
+  transition: all 0.3s ease-in-out, min-height 0.5s ease-in-out 0.2s, min-width 0.5s ease-in-out 0.2s;
+}
+
+.area-transition-out {
+  transition: all 0.3s ease-in-out 0.4s, min-height 0.5s ease-in-out 0.2s, min-width 0.5s ease-in-out 0.2s;
+}
+
+.item {
+  position: relative;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  margin: 6px;
+  border-radius: 6px;
+  min-width: 70px;
+  min-height: 40px;
+}
+
+.stretch {
+  flex: auto;
+}
+
+.middle {
+  flex-grow: 0;
+  flex: auto;
+}
+
+.just-centered {
+  justify-content: center;
+}
+
+.just-end {
+  justify-content: flex-end;
+}
+
+.end {
+  align-items:flex-end;
+}
+
+.hide {
+  display: none;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.6);
+}
+
+.overlay-buttons {
+  display: flex;
+  padding: 6px;
+  box-sizing: border-box;
+  justify-content: space-between;
+}
