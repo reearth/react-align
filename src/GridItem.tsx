@@ -2,8 +2,8 @@ import React, {
   useMemo,
   CSSProperties,
   useState,
-  PropsWithChildren,
   useCallback,
+  ReactNode,
 } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
@@ -24,6 +24,18 @@ export type ItemProps = {
   iconSize?: number;
   iconColor?: string;
   onExtend?: (extended: boolean) => void;
+  children?:
+    | ReactNode
+    | ((context: {
+        id: string;
+        editing: boolean;
+        isDragging: boolean;
+        isHovered: boolean;
+        extended: boolean;
+        extendable: boolean;
+        disabled: boolean;
+        index: number;
+      }) => ReactNode);
 };
 
 export default function GridItem({
@@ -31,9 +43,9 @@ export default function GridItem({
   children,
   id,
   index,
-  extendable,
-  extended,
-  disabled,
+  extendable = false,
+  extended = false,
+  disabled = false,
   onExtend,
   // Picky stuff.
   style,
@@ -41,16 +53,12 @@ export default function GridItem({
   iconSize,
   iconColor = 'rgb(255, 255, 255)',
   ...props
-}: PropsWithChildren<ItemProps>) {
+}: ItemProps) {
   const { end, vertical } = props as {
     end?: boolean;
     vertical?: boolean;
   };
-  const {
-    editing: enabled,
-    isDragging,
-    onExtend: onExtend2,
-  } = useAlignContext();
+  const { editing, isDragging, onExtend: onExtend2 } = useAlignContext();
   const [isHovered, setHovered] = useState(false);
   const handleExtend = useCallback(() => {
     if (!extendable) return;
@@ -67,6 +75,20 @@ export default function GridItem({
     [end]
   );
 
+  const ctx = useMemo(
+    () => ({
+      id,
+      editing,
+      isDragging,
+      isHovered,
+      extended,
+      extendable,
+      disabled,
+      index,
+    }),
+    [disabled, editing, extendable, extended, id, index, isDragging, isHovered]
+  );
+
   return (
     <Draggable draggableId={id} index={index} isDragDisabled={disabled}>
       {(provided, snapshot) => (
@@ -77,18 +99,21 @@ export default function GridItem({
           style={{
             flex: extended && !snapshot.isDragging ? 'auto' : undefined,
             opacity: snapshot.isDragging ? 0.5 : 1,
-            ...(enabled ? editorStyle : style),
+            ...(editing ? editorStyle : style),
             ...provided.draggableProps.style,
           }}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
+          <div style={{ pointerEvents: editing ? 'none' : undefined }}>
+            {typeof children === 'function' ? children(ctx) : children}
+          </div>
           <div
             className="overlay"
             style={{
               display:
                 !disabled &&
-                enabled &&
+                editing &&
                 isHovered &&
                 (snapshot.isDragging || !isDragging)
                   ? 'block'
@@ -117,7 +142,6 @@ export default function GridItem({
               )}
             </div>
           </div>
-          {children}
         </div>
       )}
     </Draggable>
