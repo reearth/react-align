@@ -105,7 +105,13 @@ export default function GridItem({
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
-          <div style={{ pointerEvents: editing ? 'none' : undefined }}>
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              pointerEvents: editing ? 'none' : undefined,
+            }}
+          >
             {typeof children === 'function' ? children(ctx) : children}
           </div>
           <div
