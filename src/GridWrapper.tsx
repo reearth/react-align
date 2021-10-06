@@ -19,13 +19,13 @@ export type GridWrapperProps = {
   editorStyle?: CSSProperties;
   onMove?: (
     id: string,
-    destLocation: string,
-    destIndedx: number,
-    originalLocation: string,
-    originalIndex: number
+    destAreaId: string,
+    destIndex: number,
+    prevAreaId: string,
+    prevIndex: number
   ) => void;
-  onAlignmentChange?: (location: string, align: Alignment) => void;
-  onExtend?: (location: string, extended: boolean) => void;
+  onAlignChange?: (areaId: string, align: Alignment) => void;
+  onExtend?: (id: string, extended: boolean) => void;
 };
 
 const GridWrapper: React.FC<GridWrapperProps> = ({
@@ -37,7 +37,7 @@ const GridWrapper: React.FC<GridWrapperProps> = ({
   editorStyle,
   children,
   onMove,
-  onAlignmentChange: onAlignChange,
+  onAlignChange,
   onExtend,
 }) => {
   const [isDragging, setDragging] = useState(false);

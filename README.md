@@ -28,11 +28,11 @@ yarn add react-align
 <div style={{ width: "100vw", height: "100vh" }}>
   {/* element containing GridWrapper needs to set the width and height */}
   <GridWrapper
-    onMove={(id: string, destAreaId: string, index: number, prevAreaId: string, prevIndex: number) => { /* ... */ }}
-    onExtend={(id: string, extebded: boolean) => { /* ... */ }}
+    onMove={(id: string, destAreaId: string, destIndex: number, prevAreaId: string, prevIndex: number) => { /* ... */ }}
+    onExtend={(id: string, extended: boolean) => { /* ... */ }}
     onAlignmentChange={(areaId: string, alignment: Alignment) => { /* ... */ }>
     <GridSection>
-      <GridArea location="location1">
+      <GridArea id="area1">
         <GridItem id="1234" index={1}>
           ...your component
         </GridItem>
@@ -42,29 +42,19 @@ yarn add react-align
 </div>
 ```
 
-All props used in the example above are **mandatory**.
+All props used in the example above are **mandatory** for full functionality.
 
-Location is based on a section/area combo that allows for unique grid layouts. The drag n drop will recognize the GridAreas based on your own desired naming convention that makes sense with your layout.
+To make sure the drag 'n drop works correctly all GridArea ids **inside a GridWrapper** must be unique. The drag n drop will recognize the GridAreas based on your own desired naming convention that makes sense with your layout.
 
-GridItem's id, index, onReorder and onMoveArea are necessary for the drag n drop as well. The id and index are presumed to be needed in your onMoveArea and OnReorder callback functions, respectively, as a way to manipulate your unique data. Types necessary for the callbacks are:
-
-```tsx
-type Props = {
-  onMove: (id: string, destAreaId: string, index: number, prevAreaId: string, prevIndex: number) => { /* ... */ }
-  onExtend: (id: string, extebded: boolean) => { /* ... */ }
-  onAlignmentChange: (areaId: string, alignment: Alignment) => { /* ... */ }
-};
-```
-
-Finally, the min/max for width and height is expected to set the GridItem container that will dynamically shrink when space is limited or if you choose to allow your GridItems to extend.
+There are many other fields for each component, so please take a look at the source code to better customize react-align to your needs and look at the example for a simple example.
 
 ## Editor mode
 
-Re:Align's editor mode is easily toggleable by passing an *enabled* prop to the GridWrapper.
+Re:Align's editor mode is easily toggleable by passing an *editing* prop to the GridWrapper.
 
 <img width="854" alt="Screen Shot 2021-06-24 at 18 15 51" src="https://user-images.githubusercontent.com/34051327/123240889-ad1b1a80-d51b-11eb-9a7d-8f9e75a9b9e0.png">
 
-(If you want to use your own method and/or avoid style changes between editor mode and non-editor mode, pass *draggable* into GridItem and *droppable* into GridArea to enable drag 'n drop functionality directly)
+If you find any bugs or would like to suggest any changes feel free to open an issue!
 
 Enjoy!
 

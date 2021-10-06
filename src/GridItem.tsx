@@ -18,11 +18,6 @@ export type ItemProps = {
   extendable?: boolean;
   extended?: boolean;
   disabled?: boolean;
-  /** Extra customizable parts only for the really picky */
-  style?: CSSProperties;
-  editorStyle?: CSSProperties;
-  iconSize?: number;
-  iconColor?: string;
   onExtend?: (extended: boolean) => void;
   children?:
     | ReactNode
@@ -36,6 +31,11 @@ export type ItemProps = {
         disabled: boolean;
         index: number;
       }) => ReactNode);
+  /** Extra customizable parts only for the really picky */
+  style?: CSSProperties;
+  editorStyle?: CSSProperties;
+  iconSize?: number;
+  iconColor?: string;
 };
 
 export default function GridItem({
@@ -46,7 +46,6 @@ export default function GridItem({
   extendable = false,
   extended = false,
   disabled = false,
-  onExtend,
   // Picky stuff.
   style,
   editorStyle,
@@ -58,14 +57,13 @@ export default function GridItem({
     end?: boolean;
     vertical?: boolean;
   };
-  const { editing, isDragging, onExtend: onExtend2 } = useAlignContext();
+  const { editing, isDragging, onExtend } = useAlignContext();
   const [isHovered, setHovered] = useState(false);
   const handleExtend = useCallback(() => {
     if (!extendable) return;
     setHovered(false);
-    onExtend?.(!extended);
-    onExtend2?.(id, !extended);
-  }, [extendable, onExtend, extended, onExtend2, id]);
+    onExtend?.(id, !extended);
+  }, [extendable, onExtend, extended, id]);
 
   const buttonStyles: CSSProperties = useMemo(
     () => ({

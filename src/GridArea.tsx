@@ -10,7 +10,7 @@ import { useAlignContext } from './context';
 import Icon from './Icon';
 import './grid.css';
 
-export type Alignment = 'start' | 'end' | 'centered';
+export type Alignment = 'start' | 'centered' | 'end';
 
 export type AreaProps = {
   id: string;
@@ -24,7 +24,7 @@ export type AreaProps = {
   style?: CSSProperties;
   editorStyle?: CSSProperties;
   iconColor?: string;
-  onAlignmentChange?: (alignment: Alignment) => void;
+  onAlignChange?: (alignment: Alignment) => void;
 };
 
 const alignments = ['start', 'centered', 'end'] as const;
@@ -37,7 +37,7 @@ export default function GridArea({
   end,
   disabled,
   align,
-  onAlignmentChange,
+  onAlignChange,
   children,
   // Picky stuff
   style,
@@ -51,9 +51,9 @@ export default function GridArea({
       alignments[
         (align ? alignments.indexOf(align) + 1 : 0) % alignments.length
       ];
-    onAlignmentChange?.(a);
+    onAlignChange?.(a);
     onAlignChange2?.(id, a);
-  }, [align, onAlignmentChange, onAlignChange2, id]);
+  }, [align, onAlignChange, onAlignChange2, id]);
 
   const buttonStyle: CSSProperties = useMemo(
     () => ({

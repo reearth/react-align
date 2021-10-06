@@ -4,10 +4,10 @@ import { GridWrapper, GridSection, GridArea, GridItem, Alignment } from "react-a
 type Item = { id: string, location: string, index: number, extended: boolean; extendable: boolean; };
 
 const initItems: Item[] = [
-  { id: "A", location: "1", index: 0, extended: false, extendable: false},
-  { id: "B", location: "1", index: 1, extended: false, extendable: false},
-  { id: "C", location: "2", index: 0, extended: true, extendable: true},
-  { id: "D", location: "2", index: 1, extended: false, extendable: false},
+  { id: "A", location: "1", index: 0, extended: false, extendable: false },
+  { id: "B", location: "1", index: 1, extended: false, extendable: false },
+  { id: "C", location: "2", index: 0, extended: true, extendable: true },
+  { id: "D", location: "2", index: 1, extended: false, extendable: false },
 ];
 
 const initAlignments: Record<string, Alignment> = {
@@ -62,7 +62,7 @@ function App() {
           return [...items];
         });
       }}
-      onAlignmentChange={(...args) => {
+      onAlignChange={(...args) => {
         console.log('alignmentChange', ...args);
         setAlignments(a => ({
           ...a,
