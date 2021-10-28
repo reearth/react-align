@@ -34,7 +34,6 @@ export type ItemProps = {
   /** Extra customizable parts only for the really picky */
   style?: CSSProperties;
   editorStyle?: CSSProperties;
-  iconSize?: number;
   iconColor?: string;
 };
 
@@ -49,11 +48,10 @@ export default function GridItem({
   // Picky stuff.
   style,
   editorStyle,
-  iconSize,
   iconColor = 'rgb(255, 255, 255)',
   ...props
 }: ItemProps) {
-  const { end, vertical } = props as {
+  const { vertical } = props as {
     end?: boolean;
     vertical?: boolean;
   };
@@ -67,10 +65,11 @@ export default function GridItem({
 
   const buttonStyles: CSSProperties = useMemo(
     () => ({
-      alignItems: end ? 'end' : 'start',
-      float: end ? 'right' : 'left',
+      alignItems: 'start',
+      float: 'left',
+      color: iconColor,
     }),
-    [end]
+    [iconColor]
   );
 
   const ctx = useMemo(
@@ -100,50 +99,52 @@ export default function GridItem({
             ...(editing ? editorStyle : style),
             ...provided.draggableProps.style,
           }}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
         >
           <div
             style={{
-              width: '100%',
-              height: '100%',
-              pointerEvents: editing ? 'none' : undefined,
+              display: 'inline-block',
+              position: 'relative',
+              minHeight: isHovered && !disabled ? '35px' : undefined,
+              width: !vertical && extended ? '100%' : undefined,
+              minWidth:
+                isHovered && !disabled
+                  ? extendable
+                    ? '70px'
+                    : '35px'
+                  : undefined,
+              height: vertical && extended ? '100%' : undefined,
             }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
           >
             {typeof children === 'function' ? children(ctx) : children}
-          </div>
-          <div
-            className="overlay"
-            style={{
-              display:
-                !disabled &&
-                editing &&
-                isHovered &&
-                (snapshot.isDragging || !isDragging)
-                  ? 'block'
-                  : 'none',
-            }}
-          >
-            <div className="overlay-buttons" style={buttonStyles}>
-              <div {...provided.dragHandleProps}>
-                <Icon
-                  name="moveArrows"
-                  size={iconSize}
-                  style={{ color: iconColor }}
-                />
-              </div>
-              {extendable && (
-                <div
-                  style={{ cursor: 'pointer', marginLeft: '8px' }}
-                  onClick={handleExtend}
-                >
-                  <Icon
-                    name={vertical ? 'verticalExtend' : 'horizontalExtend'}
-                    size={iconSize}
-                    style={{ color: iconColor }}
-                  />
+            <div
+              className="overlay"
+              style={{
+                display:
+                  !disabled &&
+                  editing &&
+                  isHovered &&
+                  (snapshot.isDragging || !isDragging)
+                    ? 'block'
+                    : 'none',
+              }}
+            >
+              <div className="overlay-buttons" style={buttonStyles}>
+                <div {...provided.dragHandleProps}>
+                  <Icon name="moveArrows" />
                 </div>
-              )}
+                {extendable && (
+                  <div
+                    style={{ cursor: 'pointer', marginLeft: '8px' }}
+                    onClick={handleExtend}
+                  >
+                    <Icon
+                      name={vertical ? 'verticalExtend' : 'horizontalExtend'}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

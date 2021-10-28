@@ -123,6 +123,7 @@ export default function GridArea({
               onClick={handleAlignChange}
               style={{
                 cursor: 'pointer',
+                color: iconColor,
               }}
             >
               <Icon
@@ -139,9 +140,6 @@ export default function GridArea({
                     ? 'alignStartV'
                     : 'alignStart'
                 }
-                style={{
-                  color: iconColor,
-                }}
               />
             </div>
           </div>

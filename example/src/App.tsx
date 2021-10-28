@@ -23,7 +23,7 @@ const initAlignments: Record<string, Alignment> = {
 
 const hoz = (l: string) => l === "4" || l === "6";
 const ver = (l: string) => l === "2" || l === "8";
-const ItemCompoent = (item: Item, i: number) => (
+const ItemComponent = (item: Item, i: number) => (
   <GridItem id={item.id} index={i} key={item.id} extendable={item.extendable} extended={item.extended}>
     <div
       style={{
@@ -87,8 +87,9 @@ function App() {
             end={l === "3"}
             vertical={l === "2"}
             stretch={l === "2"}
-            editorStyle={{ background: l === "2" ? "blue" : "red" }}>
-            {items.filter(i => i.location === l).sort((a, b) => a.index - b.index).map(ItemCompoent)}
+            editorStyle={{ background: l === "2" ? "blue" : "red" }}
+            iconColor={l === "2" ? "red" : "blue"}>
+            {items.filter(i => i.location === l).sort((a, b) => a.index - b.index).map(ItemComponent)}
           </GridArea>
         ))}
       </GridSection>
@@ -105,8 +106,9 @@ function App() {
             key={l}
             align={alignments[l]}
             end={l === "6"}
-            editorStyle={{ background: "red" }}>
-            {items.filter(i => i.location === l).sort((a, b) => a.index - b.index).map(ItemCompoent)}
+            editorStyle={{ background: "red" }}
+            iconColor={"blue"}>
+            {items.filter(i => i.location === l).sort((a, b) => a.index - b.index).map(ItemComponent)}
           </GridArea>
         ))}
       </GridSection>
@@ -119,8 +121,9 @@ function App() {
             end
             vertical={l === "8"}
             stretch={l === "8"}
-            editorStyle={{ background: l === "8" ? "blue" : "red" }}>
-            {items.filter(i => i.location === l).sort((a, b) => a.index - b.index).map(ItemCompoent)}
+            editorStyle={{ background: l === "8" ? "blue" : "red" }}
+            iconColor={l === "8" ? "red" : "blue"}>
+            {items.filter(i => i.location === l).sort((a, b) => a.index - b.index).map(ItemComponent)}
           </GridArea>
         ))}
       </GridSection>
