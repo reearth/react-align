@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback, useState } from 'react';
+import React, { CSSProperties, ReactNode, useCallback, useState } from 'react';
 import {
   DragDropContext,
   DropResult,
@@ -11,6 +11,7 @@ import './grid.css';
 
 export type GridWrapperProps = {
   className?: string;
+  children?: ReactNode;
   editing?: boolean;
   vertical?: boolean;
   stretch?: boolean;
@@ -30,12 +31,12 @@ export type GridWrapperProps = {
 
 const GridWrapper: React.FC<GridWrapperProps> = ({
   className,
+  children,
   editing,
   vertical,
   stretch,
   style,
   editorStyle,
-  children,
   onMove,
   onAlignChange,
   onExtend,
