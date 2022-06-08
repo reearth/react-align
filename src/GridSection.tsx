@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 
 import { useAlignContext } from './context';
 import './grid.css';
@@ -12,6 +12,7 @@ export type GridSectionProps = {
   /** Extra customizable parts only for the really picky */
   style?: CSSProperties;
   editorStyle?: CSSProperties;
+  children?: ReactNode;
 };
 
 const GridSection: React.FC<GridSectionProps> = ({

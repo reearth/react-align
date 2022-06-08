@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback, useState } from 'react';
+import React, { CSSProperties, ReactNode, useCallback, useState } from 'react';
 import {
   DragDropContext,
   DropResult,
@@ -17,6 +17,7 @@ export type GridWrapperProps = {
   /** Extra customizable parts only for the really picky */
   style?: CSSProperties;
   editorStyle?: CSSProperties;
+  children?: ReactNode;
   onMove?: (
     id: string,
     destAreaId: string,
