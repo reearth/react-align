@@ -1,10 +1,11 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 
 import { useAlignContext } from './context';
 import './grid.css';
 
 export type GridSectionProps = {
   className?: string;
+  children?: ReactNode;
   horizontal?: boolean;
   stretch?: boolean;
   fixedWidth?: number;
@@ -16,13 +17,13 @@ export type GridSectionProps = {
 
 const GridSection: React.FC<GridSectionProps> = ({
   className,
+  children,
   horizontal,
   stretch,
   fixedWidth,
   fixedHeight,
   style,
   editorStyle,
-  children,
 }) => {
   const { editing: enabled } = useAlignContext();
 
