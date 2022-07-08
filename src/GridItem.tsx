@@ -86,7 +86,6 @@ export default function GridItem({
     [disabled, editing, extendable, extended, id, index, isDragging, isHovered]
   );
 
-  console.log('hey');
   return (
     <Draggable draggableId={id} index={index} isDragDisabled={disabled}>
       {(provided, snapshot) => (
