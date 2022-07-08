@@ -86,6 +86,7 @@ export default function GridItem({
     [disabled, editing, extendable, extended, id, index, isDragging, isHovered]
   );
 
+  console.log('hey');
   return (
     <Draggable draggableId={id} index={index} isDragDisabled={disabled}>
       {(provided, snapshot) => (
@@ -114,8 +115,8 @@ export default function GridItem({
                   : undefined,
               height: vertical && extended ? '100%' : undefined,
             }}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
+            onMouseEnter={() => editing && setHovered(true)}
+            onMouseLeave={() => editing && setHovered(false)}
           >
             {typeof children === 'function' ? children(ctx) : children}
             <div
