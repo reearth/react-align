@@ -7,7 +7,7 @@ import dts from 'vite-plugin-dts';
 
 const postcss = require('rollup-plugin-postcss');
 const cssnano = require('cssnano');
-const svgr = require('@svgr/rollup').default;
+const svgr = require('@svgr/rollup');
 
 const resolvePath = (str: string) => path.resolve(__dirname, str);
 
