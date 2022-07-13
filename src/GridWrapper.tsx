@@ -70,8 +70,9 @@ const GridWrapper: React.FC<GridWrapperProps> = ({
 
   return (
     <div
-      className={`wrapper ${className} ${vertical && 'vertical'} ${stretch &&
-        'stretch'}`}
+      className={`wrapper ${className} ${vertical && 'vertical'} ${
+        stretch && 'stretch'
+      }`}
       style={editing ? editorStyle : style}
     >
       <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>

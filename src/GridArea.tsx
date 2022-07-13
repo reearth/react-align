@@ -73,7 +73,7 @@ export default function GridArea({
   // Used to know where to align the overlay buttons (end) and how to extend the GridItems (vertical).
   const childrenWithParentProps = useMemo(
     () =>
-      React.Children.map(children, child =>
+      React.Children.map(children, (child) =>
         React.cloneElement(child as React.ReactElement<any>, {
           end,
           vertical,
