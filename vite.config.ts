@@ -10,9 +10,11 @@ import svgr from "@svgr/rollup";
 export default defineConfig({
   build: {
     target: "es2015",
+    sourcemap: true,
     lib: {
       entry: "src/index.tsx",
       name: "ReactAlign",
+      formats: ["es", "cjs"],
       fileName: (format) => `react-align.${format}.js`,
     },
     rollupOptions: {
@@ -26,7 +28,7 @@ export default defineConfig({
   },
   plugins: [
     dts({
-      rollupTypes: true,
+      copyDtsFiles: false,
     }),
     postcss({
       plugins: [
