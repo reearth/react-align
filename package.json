@@ -36,7 +36,6 @@
   "prettier": {
     "printWidth": 80,
     "semi": true,
-    "singleQuote": true,
     "trailingComma": "es5"
   },
   "size-limit": [
@@ -67,7 +66,6 @@
     "prettier": "^2.7.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-is": "^17.0.2",
     "rollup-plugin-postcss": "^4.0.2",
     "size-limit": "^6.0.3",
     "typescript": "^4.7.4",

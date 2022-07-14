@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import Icons from './icons';
+import Icons from "./icons";
 
 export type IconKeys = keyof typeof Icons;
 
