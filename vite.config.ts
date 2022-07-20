@@ -1,44 +1,36 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
+/// <reference types="vite-plugin-svgr/client" />
 
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-import postcss from "rollup-plugin-postcss";
-import cssnano from "cssnano";
-import svgr from "@svgr/rollup";
+import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
+import svgr from "vite-plugin-svgr";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
+  plugins: [
+    svgr(),
+    react(),
+    dts({
+      copyDtsFiles: false,
+    }),
+  ],
   build: {
     target: "es2015",
-    sourcemap: true,
     lib: {
-      entry: "src/index.tsx",
       name: "ReactAlign",
-      formats: ["es", "cjs"],
-      fileName: (format) => `react-align.${format}.js`,
+      entry: "src/index.ts",
     },
     rollupOptions: {
-      external: ["react"],
+      plugins: [cssInjectedByJsPlugin()],
+      external: ["react", "react-beautiful-dnd"],
       output: {
         globals: {
           react: "React",
+          "react-beautiful-dnd": "ReactBeautifulDnd",
         },
       },
     },
   },
-  plugins: [
-    dts({
-      copyDtsFiles: false,
-    }),
-    postcss({
-      plugins: [
-        cssnano({
-          preset: "default",
-        }),
-      ],
-      inject: true,
-      extract: false,
-    }),
-    svgr(),
-  ],
 });

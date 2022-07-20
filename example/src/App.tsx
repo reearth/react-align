@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GridWrapper, GridSection, GridArea, GridItem, Alignment } from "react-align/src/index";
+import { GridWrapper, GridSection, GridArea, GridItem, Alignment } from "react-align";
 
 type Item = { id: string, location: string, index: number, extended: boolean; extendable: boolean; };
 
