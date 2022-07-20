@@ -3,6 +3,8 @@ import React, {
   PropsWithChildren,
   useCallback,
   useMemo,
+  useState,
+  useEffect,
 } from "react";
 import { Droppable } from "react-beautiful-dnd";
 
@@ -44,6 +46,19 @@ export default function GridArea({
   editorStyle,
   iconColor = "#FFFFFF",
 }: PropsWithChildren<AreaProps>) {
+  // ***** Keeps everything working inside dev environment with React 18 StrictMode *****
+  const [enableDrop, setEnableDrop] = useState(false);
+
+  useEffect(() => {
+    const animation = requestAnimationFrame(() => setEnableDrop(true));
+
+    return () => {
+      cancelAnimationFrame(animation);
+      setEnableDrop(false);
+    };
+  }, []);
+  // ***** Keeps everything working inside dev environment with React 18 StrictMode *****
+
   const { editing: enabled, onAlignChange: onAlignChange2 } = useAlignContext();
 
   const handleAlignChange = useCallback(() => {
@@ -82,7 +97,7 @@ export default function GridArea({
     [children, end, vertical]
   );
 
-  return (
+  return enableDrop ? (
     <Droppable
       droppableId={id}
       direction={vertical ? "vertical" : "horizontal"}
@@ -146,5 +161,5 @@ export default function GridArea({
         </div>
       )}
     </Droppable>
-  );
+  ) : null;
 }

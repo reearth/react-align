@@ -131,7 +131,10 @@ export default function GridItem({
               }}
             >
               <div className="overlay-buttons" style={buttonStyles}>
-                <div {...provided.dragHandleProps}>
+                <div
+                  {...provided.dragHandleProps}
+                  style={{ cursor: "pointer" }}
+                >
                   <Icon name="moveArrows" />
                 </div>
                 {extendable && (
