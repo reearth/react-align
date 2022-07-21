@@ -60,9 +60,7 @@
     "vite": "^3.0.0",
     "vite-plugin-css-injected-by-js": "^1.5.1",
     "vite-plugin-dts": "^1.3.0",
+    "vite-plugin-svgr": "^2.2.0",
     "vitest": "^0.18.0"
-  },
-  "dependencies": {
-    "vite-plugin-svgr": "^2.2.0"
   }
 }
