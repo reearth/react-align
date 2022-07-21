@@ -1,12 +1,12 @@
 module.exports = {
-  "extends": [
-    "react-app",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
-  ],
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  }
-}
+  extends: ["react-app", "plugin:prettier/recommended"],
+  rules: {
+    "import/newline-after-import": "warn",
+    "import/no-anonymous-default-export": 0,
+  },
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
+};

@@ -4,12 +4,12 @@ import React, {
   useState,
   useCallback,
   ReactNode,
-} from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+} from "react";
+import { Draggable } from "react-beautiful-dnd";
 
-import { useAlignContext } from './context';
-import Icon from './Icon';
-import './grid.css';
+import { useAlignContext } from "./context";
+import Icon from "./Icon";
+import "./grid.css";
 
 export type ItemProps = {
   className?: string;
@@ -48,7 +48,7 @@ export default function GridItem({
   // Picky stuff.
   style,
   editorStyle,
-  iconColor = 'rgb(255, 255, 255)',
+  iconColor = "rgb(255, 255, 255)",
   ...props
 }: ItemProps) {
   const { vertical } = props as {
@@ -65,8 +65,8 @@ export default function GridItem({
 
   const buttonStyles: CSSProperties = useMemo(
     () => ({
-      alignItems: 'start',
-      float: 'left',
+      alignItems: "start",
+      float: "left",
       color: iconColor,
     }),
     [iconColor]
@@ -94,7 +94,7 @@ export default function GridItem({
           {...provided.draggableProps}
           className={`${className} item`}
           style={{
-            flex: extended && !snapshot.isDragging ? 'auto' : undefined,
+            flex: extended && !snapshot.isDragging ? "auto" : undefined,
             opacity: snapshot.isDragging ? 0.5 : 1,
             ...(editing ? editorStyle : style),
             ...provided.draggableProps.style,
@@ -102,22 +102,22 @@ export default function GridItem({
         >
           <div
             style={{
-              display: 'inline-block',
-              position: 'relative',
-              minHeight: isHovered && !disabled ? '35px' : undefined,
-              width: !vertical && extended ? '100%' : undefined,
+              display: "inline-block",
+              position: "relative",
+              minHeight: isHovered && !disabled ? "35px" : undefined,
+              width: !vertical && extended ? "100%" : undefined,
               minWidth:
                 isHovered && !disabled
                   ? extendable
-                    ? '70px'
-                    : '35px'
+                    ? "70px"
+                    : "35px"
                   : undefined,
-              height: vertical && extended ? '100%' : undefined,
+              height: vertical && extended ? "100%" : undefined,
             }}
             onMouseEnter={() => editing && setHovered(true)}
             onMouseLeave={() => editing && setHovered(false)}
           >
-            {typeof children === 'function' ? children(ctx) : children}
+            {typeof children === "function" ? children(ctx) : children}
             <div
               className="overlay"
               style={{
@@ -126,21 +126,21 @@ export default function GridItem({
                   editing &&
                   isHovered &&
                   (snapshot.isDragging || !isDragging)
-                    ? 'block'
-                    : 'none',
+                    ? "block"
+                    : "none",
               }}
             >
               <div className="overlay-buttons" style={buttonStyles}>
-                <div {...provided.dragHandleProps}>
+                <div {...provided.dragHandleProps} style={{ cursor: "grab" }}>
                   <Icon name="moveArrows" />
                 </div>
                 {extendable && (
                   <div
-                    style={{ cursor: 'pointer', marginLeft: '8px' }}
+                    style={{ cursor: "pointer", marginLeft: "8px" }}
                     onClick={handleExtend}
                   >
                     <Icon
-                      name={vertical ? 'verticalExtend' : 'horizontalExtend'}
+                      name={vertical ? "verticalExtend" : "horizontalExtend"}
                     />
                   </div>
                 )}

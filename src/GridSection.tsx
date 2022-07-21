@@ -1,7 +1,7 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { CSSProperties, ReactNode } from "react";
 
-import { useAlignContext } from './context';
-import './grid.css';
+import { useAlignContext } from "./context";
+import "./grid.css";
 
 export type GridSectionProps = {
   className?: string;
@@ -29,19 +29,19 @@ const GridSection: React.FC<GridSectionProps> = ({
 
   return (
     <div
-      className={`section ${className} ${horizontal ? 'horizontal' : ''} ${
-        stretch ? 'stretch' : ''
+      className={`section ${className} ${horizontal ? "horizontal" : ""} ${
+        stretch ? "stretch" : ""
       }`}
       style={{
         ...(enabled ? editorStyle : style),
-        ...(typeof fixedHeight === 'number'
+        ...(typeof fixedHeight === "number"
           ? {
-              height: fixedHeight + 'px',
+              height: fixedHeight + "px",
             }
           : {}),
-        ...(typeof fixedWidth === 'number'
+        ...(typeof fixedWidth === "number"
           ? {
-              width: fixedWidth + 'px',
+              width: fixedWidth + "px",
             }
           : {}),
       }}

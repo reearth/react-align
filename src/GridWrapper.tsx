@@ -1,13 +1,13 @@
-import React, { CSSProperties, ReactNode, useCallback, useState } from 'react';
+import React, { CSSProperties, ReactNode, useCallback, useState } from "react";
 import {
   DragDropContext,
   DropResult,
   ResponderProvided,
-} from 'react-beautiful-dnd';
+} from "react-beautiful-dnd";
 
-import { Context } from './context';
-import { Alignment } from './GridArea';
-import './grid.css';
+import { Context } from "./context";
+import { Alignment } from "./GridArea";
+import "./grid.css";
 
 export type GridWrapperProps = {
   className?: string;
@@ -52,7 +52,7 @@ const GridWrapper: React.FC<GridWrapperProps> = ({
       setDragging(false);
       if (
         !result.destination ||
-        result.reason !== 'DROP' ||
+        result.reason !== "DROP" ||
         (result.destination.droppableId === result.source.droppableId &&
           result.destination.index === result.source.index)
       )
@@ -70,8 +70,9 @@ const GridWrapper: React.FC<GridWrapperProps> = ({
 
   return (
     <div
-      className={`wrapper ${className} ${vertical && 'vertical'} ${stretch &&
-        'stretch'}`}
+      className={`wrapper ${className} ${vertical && "vertical"} ${
+        stretch && "stretch"
+      }`}
       style={editing ? editorStyle : style}
     >
       <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>

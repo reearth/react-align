@@ -1,5 +1,5 @@
-import { createContext, useContext } from 'react';
-import { Alignment } from '.';
+import { createContext, useContext } from "react";
+import { Alignment } from ".";
 
 export const Context = createContext<{
   editing: boolean;

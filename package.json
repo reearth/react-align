@@ -2,20 +2,21 @@
   "name": "react-align",
   "version": "2.0.6",
   "author": "KaWaite",
-  "module": "dist/react-align.esm.js",
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/react-align.umd.js",
+  "module": "./dist/react-align.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/react-align.mjs",
+      "require": "./dist/react-align.umd.js"
+    }
+  },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build": "tsc && vite build",
+    "type": "tsc",
+    "test": "vitest",
+    "lint": "eslint ."
   },
   "files": [
     "dist",
@@ -25,7 +26,8 @@
     "node": ">=10"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16",
+    "react-beautiful-dnd": "*"
   },
   "husky": {
     "hooks": {
@@ -35,41 +37,32 @@
   "prettier": {
     "printWidth": 80,
     "semi": true,
-    "singleQuote": true,
     "trailingComma": "es5"
   },
-  "size-limit": [
-    {
-      "path": "dist/react-align.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/react-align.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
-    "@babel/core": "^7.15.8",
-    "@size-limit/preset-small-lib": "^6.0.3",
-    "@svgr/rollup": "^5.5.0",
-    "@types/react": "^17.0.33",
+    "@babel/core": "^7.18.6",
+    "@types/react": "^18.0.15",
     "@types/react-beautiful-dnd": "^13.1.2",
-    "@types/react-dom": "^17.0.10",
-    "babel-loader": "^8.2.3",
-    "cssnano": "^5.0.8",
-    "husky": "^7.0.4",
-    "postcss": "^8.3.11",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-is": "^17.0.2",
-    "rollup-plugin-postcss": "^4.0.1",
-    "size-limit": "^6.0.3",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.3.1",
-    "typescript": "^4.4.4"
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.0.0",
+    "babel-loader": "^8.2.5",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.1",
+    "postcss": "^8.4.14",
+    "prettier": "^2.7.1",
+    "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.7.4",
+    "vite": "^3.0.0",
+    "vite-plugin-css-injected-by-js": "^1.5.1",
+    "vite-plugin-dts": "^1.3.0",
+    "vitest": "^0.18.0"
   },
   "dependencies": {
-    "glamor": "^2.20.40",
-    "react-beautiful-dnd": "^13.1.0"
+    "vite-plugin-svgr": "^2.2.0"
   }
 }
