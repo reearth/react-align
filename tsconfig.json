@@ -1,8 +1,5 @@
 {
-  "include": [
-    "src",
-    "types/index.d.ts"
-  ],
+  "include": ["src"],
   "compilerOptions": {
     "module": "esnext",
     "lib": [
