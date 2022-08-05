@@ -12,6 +12,7 @@ export default defineConfig({
     react(),
     dts({
       copyDtsFiles: false,
+      rollupTypes: true,
     }),
   ],
   build: {
