@@ -28,6 +28,7 @@ export type AreaProps = {
   editorStyle?: CSSProperties;
   iconColor?: string;
   onAlignChange?: (alignment: Alignment) => void;
+  onClick?: (id?: string) => void;
 };
 
 const alignments = ["start", "centered", "end"] as const;
@@ -41,12 +42,13 @@ export default function GridArea({
   disabled,
   align,
   realignable,
-  onAlignChange,
   children,
   // Picky stuff
   style,
   editorStyle,
   iconColor = "#FFFFFF",
+  onAlignChange,
+  onClick,
 }: PropsWithChildren<AreaProps>) {
   // ***** Keeps everything working inside dev environment with React 18 StrictMode *****
   const [enableDrop, setEnableDrop] = useState(false);
@@ -72,6 +74,11 @@ export default function GridArea({
     onAlignChange?.(a);
     onAlignChange2?.(id, a);
   }, [align, realignable, onAlignChange, onAlignChange2, id]);
+
+  const handleClick = useCallback(() => {
+    if (!enabled) return;
+    onClick?.(id);
+  }, [id, enabled, onClick]);
 
   const buttonStyle: CSSProperties = useMemo(
     () => ({
@@ -133,6 +140,7 @@ export default function GridArea({
             opacity: snapshot.isDraggingOver ? 0.8 : 1,
             ...(enabled ? editorStyle : style),
           }}
+          onClick={handleClick}
         >
           {childrenWithParentProps}
           {provided.placeholder}

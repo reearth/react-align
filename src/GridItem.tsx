@@ -116,6 +116,7 @@ export default function GridItem({
             }}
             onMouseEnter={() => editing && setHovered(true)}
             onMouseLeave={() => editing && setHovered(false)}
+            onClick={(e) => e.stopPropagation()}
           >
             {typeof children === "function" ? children(ctx) : children}
             <div
