@@ -21,6 +21,7 @@ export type AreaProps = {
   stretch?: boolean;
   end?: boolean;
   align?: Alignment;
+  realignable?: boolean;
   disabled?: boolean;
   /** Extra customizable parts only for the really picky */
   style?: CSSProperties;
@@ -39,6 +40,7 @@ export default function GridArea({
   end,
   disabled,
   align,
+  realignable,
   onAlignChange,
   children,
   // Picky stuff
@@ -62,13 +64,14 @@ export default function GridArea({
   const { editing: enabled, onAlignChange: onAlignChange2 } = useAlignContext();
 
   const handleAlignChange = useCallback(() => {
+    if (!realignable) return;
     const a =
       alignments[
         (align ? alignments.indexOf(align) + 1 : 0) % alignments.length
       ];
     onAlignChange?.(a);
     onAlignChange2?.(id, a);
-  }, [align, onAlignChange, onAlignChange2, id]);
+  }, [align, realignable, onAlignChange, onAlignChange2, id]);
 
   const buttonStyle: CSSProperties = useMemo(
     () => ({
@@ -77,11 +80,11 @@ export default function GridArea({
       right: vertical ? (!end ? 0 : undefined) : "50%",
       bottom: !vertical && !end ? 0 : vertical ? "50%" : undefined,
       top: vertical ? "50%" : end ? 0 : undefined,
-      opacity: !disabled && enabled && align ? 1 : 0,
-      pointerEvents: !disabled && enabled && align ? "auto" : "none",
+      opacity: !disabled && enabled && realignable ? 1 : 0,
+      pointerEvents: !disabled && enabled && realignable ? "auto" : "none",
       transition: "all 0.5s ease-in-out",
     }),
-    [vertical, end, disabled, enabled, align]
+    [vertical, end, disabled, enabled, realignable]
   );
 
   // Rebuilds the GridItem children to receive their parent GridArea's 'end' and 'vertical' values.
