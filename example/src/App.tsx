@@ -62,6 +62,12 @@ function App() {
   const [edit, setEdit] = useState(false);
   const [items, setItems] = useState(initItems);
   const [alignments, setAlignments] = useState(initAlignments);
+  const [background, setBackground] = useState("yellow");
+
+  const handleBackgroundChange = (id?: string) => {
+    console.log(`Clicked on Grid Area with id of: ${id}`);
+    setBackground(background === "green" ? "purple" : "green");
+  };
 
   return (
     <GridWrapper
@@ -112,7 +118,11 @@ function App() {
             end={l === "3"}
             vertical={l === "2"}
             stretch={l === "2"}
-            editorStyle={{ background: l === "2" ? "blue" : "red" }}
+            onClick={handleBackgroundChange}
+            editorStyle={{
+              background: l === "2" ? "blue" : "red",
+              border: `2px solid ${background}`,
+            }}
             iconColor={l === "2" ? "red" : "blue"}
           >
             {items
