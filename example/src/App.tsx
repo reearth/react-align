@@ -115,7 +115,8 @@ function App() {
             id={l}
             key={l}
             align={alignments[l]}
-            end={l === "3"}
+            middle={l === "2"}
+            bottom={l === "3"}
             vertical={l === "2"}
             stretch={l === "2"}
             onClick={handleBackgroundChange}
@@ -134,7 +135,7 @@ function App() {
       </GridSection>
       <GridSection stretch>
         {["4", "5", "6"].map((l) =>
-          l == "5" ? (
+          l === "5" ? (
             <div key={l} style={{ flex: "auto" }}>
               <button onClick={() => setEdit((e) => !e)}>
                 {edit ? "Finish" : "Start"} editing
@@ -145,7 +146,7 @@ function App() {
               id={l}
               key={l}
               align={alignments[l]}
-              end={l === "6"}
+              bottom={l === "6"}
               editorStyle={{ background: "red" }}
               iconColor={"blue"}
             >
@@ -163,7 +164,7 @@ function App() {
             id={l}
             key={l}
             align={alignments[l]}
-            end
+            bottom
             vertical={l === "8"}
             stretch={l === "8"}
             editorStyle={{ background: l === "8" ? "blue" : "red" }}
