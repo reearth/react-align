@@ -1,10 +1,4 @@
-import React, {
-  useMemo,
-  CSSProperties,
-  useState,
-  useCallback,
-  ReactNode,
-} from "react";
+import { useMemo, CSSProperties, useState, useCallback, ReactNode } from "react";
 import { Draggable } from "react-beautiful-dnd";
 
 import { useAlignContext } from "./context";
@@ -69,7 +63,7 @@ export default function GridItem({
       float: "left",
       color: iconColor,
     }),
-    [iconColor]
+    [iconColor],
   );
 
   const ctx = useMemo(
@@ -83,7 +77,7 @@ export default function GridItem({
       disabled,
       index,
     }),
-    [disabled, editing, extendable, extended, id, index, isDragging, isHovered]
+    [disabled, editing, extendable, extended, id, index, isDragging, isHovered],
   );
 
   return (
@@ -98,51 +92,35 @@ export default function GridItem({
             opacity: snapshot.isDragging ? 0.5 : 1,
             ...(editing ? editorStyle : style),
             ...provided.draggableProps.style,
-          }}
-        >
+          }}>
           <div
             style={{
               display: "inline-block",
               position: "relative",
               minHeight: isHovered && !disabled ? "35px" : undefined,
               width: !vertical && extended ? "100%" : undefined,
-              minWidth:
-                isHovered && !disabled
-                  ? extendable
-                    ? "70px"
-                    : "35px"
-                  : undefined,
+              minWidth: isHovered && !disabled ? (extendable ? "70px" : "35px") : undefined,
               height: vertical && extended ? "100%" : undefined,
             }}
             onMouseEnter={() => editing && setHovered(true)}
             onMouseLeave={() => editing && setHovered(false)}
-            onClick={(e) => e.stopPropagation()}
-          >
+            onClick={e => e.stopPropagation()}>
             {typeof children === "function" ? children(ctx) : children}
             <div
               className="overlay"
               style={{
                 display:
-                  !disabled &&
-                  editing &&
-                  isHovered &&
-                  (snapshot.isDragging || !isDragging)
+                  !disabled && editing && isHovered && (snapshot.isDragging || !isDragging)
                     ? "block"
                     : "none",
-              }}
-            >
+              }}>
               <div className="overlay-buttons" style={buttonStyles}>
                 <div {...provided.dragHandleProps} style={{ cursor: "grab" }}>
                   <Icon name="moveArrows" />
                 </div>
                 {extendable && (
-                  <div
-                    style={{ cursor: "pointer", marginLeft: "8px" }}
-                    onClick={handleExtend}
-                  >
-                    <Icon
-                      name={vertical ? "verticalExtend" : "horizontalExtend"}
-                    />
+                  <div style={{ cursor: "pointer", marginLeft: "8px" }} onClick={handleExtend}>
+                    <Icon name={vertical ? "verticalExtend" : "horizontalExtend"} />
                   </div>
                 )}
               </div>

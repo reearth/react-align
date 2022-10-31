@@ -1,17 +1,17 @@
 /* Default component styles */
-.wrapper {
+.reactalign.wrapper {
   height: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.section {
+.reactalign .section {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.area {
+.reactalign .area {
   display: flex;
   border: 0 solid transparent;
   box-sizing: border-box;
@@ -19,46 +19,46 @@
   position: relative;
 }
 
-.area-transition-in {
+.reactalign .area-transition-in {
   transition: all 0.3s ease-in-out, min-height 0.5s ease-in-out 0.2s, min-width 0.5s ease-in-out 0.2s;
 }
 
-.area-transition-out {
+.reactalign .area-transition-out {
   transition: all 0.3s ease-in-out 0.4s, min-height 0.5s ease-in-out 0.2s, min-width 0.5s ease-in-out 0.2s;
 }
 
-.item {
+.reactalign .item {
   position: relative;
   border: 0 solid transparent;
   margin: 6px;
   border-radius: 6px;
 }
 
-.stretch {
+.reactalign .stretch {
   flex: auto;
 }
 
-.just-centered {
+.reactalign .just-centered {
   justify-content: center;
 }
 
-.just-end {
+.reactalign .just-end {
   justify-content: flex-end;
 }
 
-.middle {
+.reactalign .middle {
   align-items: center;
 }
 
-.bottom {
+.reactalign .bottom {
   align-items: flex-end;
 }
 
-.hide {
+.reactalign .hide {
   display: none;
 }
 
-.overlay {
+.reactalign .overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -68,7 +68,7 @@
   background: rgba(0,0,0,0.6);
 }
 
-.overlay-buttons {
+.reactalign .overlay-buttons {
   display: flex;
   padding: 6px;
   box-sizing: border-box;

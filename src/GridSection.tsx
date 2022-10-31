@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 
 import { useAlignContext } from "./context";
 import "./grid.css";
@@ -44,8 +44,7 @@ const GridSection: React.FC<GridSectionProps> = ({
               width: fixedWidth + "px",
             }
           : {}),
-      }}
-    >
+      }}>
       {children}
     </div>
   );

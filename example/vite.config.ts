@@ -1,10 +1,9 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import reactSvgPlugin from "vite-plugin-react-svg";
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [reactSvgPlugin({ defaultExport: "component" }), react()],
+  plugins: [react()],
   server: {
     port: 3001,
     open: true,

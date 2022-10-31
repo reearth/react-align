@@ -1,10 +1,13 @@
-import React, {
+import {
   CSSProperties,
   PropsWithChildren,
   useCallback,
   useMemo,
   useState,
   useEffect,
+  cloneElement,
+  Children,
+  ReactElement,
 } from "react";
 import { Droppable } from "react-beautiful-dnd";
 
@@ -69,10 +72,7 @@ export default function GridArea({
 
   const handleAlignChange = useCallback(() => {
     if (!realignable) return;
-    const a =
-      alignments[
-        (align ? alignments.indexOf(align) + 1 : 0) % alignments.length
-      ];
+    const a = alignments[(align ? alignments.indexOf(align) + 1 : 0) % alignments.length];
     onAlignChange?.(a);
     onAlignChange2?.(id, a);
   }, [align, realignable, onAlignChange, onAlignChange2, id]);
@@ -93,28 +93,27 @@ export default function GridArea({
       pointerEvents: !disabled && enabled && realignable ? "auto" : "none",
       transition: "all 0.5s ease-in-out",
     }),
-    [vertical, bottom, disabled, enabled, realignable]
+    [vertical, bottom, disabled, enabled, realignable],
   );
 
   // Rebuilds the GridItem children to receive their parent GridArea's 'end' and 'vertical' values.
   // Used to know where to align the overlay buttons (end) and how to extend the GridItems (vertical).
   const childrenWithParentProps = useMemo(
     () =>
-      React.Children.map(children, (child) =>
-        React.cloneElement(child as React.ReactElement<any>, {
+      Children.map(children, child =>
+        cloneElement(child as ReactElement<any>, {
           bottom,
           vertical,
-        })
+        }),
       ),
-    [children, bottom, vertical]
+    [children, bottom, vertical],
   );
 
   return enableDrop ? (
     <Droppable
       droppableId={id}
       direction={vertical ? "vertical" : "horizontal"}
-      isDropDisabled={disabled}
-    >
+      isDropDisabled={disabled}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
@@ -125,26 +124,19 @@ export default function GridArea({
             stretch && "stretch",
             middle && "middle",
             bottom && "bottom",
-            align === "centered"
-              ? "just-centered"
-              : align === "end"
-              ? "just-end"
-              : "start",
+            align === "centered" ? "just-centered" : align === "end" ? "just-end" : "start",
             enabled ? "area-transition-in" : "area-transition-out",
           ]
             .filter(Boolean)
             .join(" ")}
           style={{
             flexDirection: vertical ? "column" : "row",
-            minHeight:
-              !React.Children.count(children) && !enabled ? "0px" : "26px",
-            minWidth:
-              !React.Children.count(children) && !enabled ? "0px" : "46px",
+            minHeight: !Children.count(children) && !enabled ? "0px" : "26px",
+            minWidth: !Children.count(children) && !enabled ? "0px" : "46px",
             opacity: snapshot.isDraggingOver ? 0.8 : 1,
             ...(enabled ? editorStyle : style),
           }}
-          onClick={handleClick}
-        >
+          onClick={handleClick}>
           {childrenWithParentProps}
           {provided.placeholder}
           <div style={buttonStyle}>
@@ -153,8 +145,7 @@ export default function GridArea({
               style={{
                 cursor: "pointer",
                 color: iconColor,
-              }}
-            >
+              }}>
               <Icon
                 name={
                   align === "centered"

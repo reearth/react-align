@@ -1,9 +1,5 @@
-import React, { CSSProperties, ReactNode, useCallback, useState } from "react";
-import {
-  DragDropContext,
-  DropResult,
-  ResponderProvided,
-} from "react-beautiful-dnd";
+import { CSSProperties, ReactNode, useCallback, useState } from "react";
+import { DragDropContext, DropResult, ResponderProvided } from "react-beautiful-dnd";
 
 import { Context } from "./context";
 import { Alignment } from "./GridArea";
@@ -23,7 +19,7 @@ export type GridWrapperProps = {
     destAreaId: string,
     destIndex: number,
     prevAreaId: string,
-    prevIndex: number
+    prevIndex: number,
   ) => void;
   onAlignChange?: (areaId: string, align: Alignment) => void;
   onExtend?: (id: string, extended: boolean) => void;
@@ -62,23 +58,20 @@ const GridWrapper: React.FC<GridWrapperProps> = ({
         result.destination.droppableId,
         result.destination.index,
         result.source.droppableId,
-        result.source.index
+        result.source.index,
       );
     },
-    [onMove]
+    [onMove],
   );
 
   return (
     <div
-      className={`wrapper ${className} ${vertical && "vertical"} ${
-        stretch && "stretch"
-      }`}
-      style={editing ? editorStyle : style}
-    >
+      className={["reactalign", "wrapper", className, vertical && "vertical", stretch && "stretch"]
+        .filter(Boolean)
+        .join(" ")}
+      style={editing ? editorStyle : style}>
       <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <Context.Provider
-          value={{ editing: !!editing, onAlignChange, onExtend, isDragging }}
-        >
+        <Context.Provider value={{ editing: !!editing, onAlignChange, onExtend, isDragging }}>
           {children}
         </Context.Provider>
       </DragDropContext>
