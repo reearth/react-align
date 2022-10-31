@@ -19,7 +19,8 @@ export type AreaProps = {
   className?: string;
   vertical?: boolean;
   stretch?: boolean;
-  end?: boolean;
+  middle?: boolean;
+  bottom?: boolean;
   align?: Alignment;
   realignable?: boolean;
   disabled?: boolean;
@@ -38,7 +39,8 @@ export default function GridArea({
   className,
   vertical,
   stretch,
-  end,
+  middle,
+  bottom,
   disabled,
   align,
   realignable,
@@ -83,15 +85,15 @@ export default function GridArea({
   const buttonStyle: CSSProperties = useMemo(
     () => ({
       position: "absolute",
-      left: vertical ? (end ? 0 : undefined) : "50%",
-      right: vertical ? (!end ? 0 : undefined) : "50%",
-      bottom: !vertical && !end ? 0 : vertical ? "50%" : undefined,
-      top: vertical ? "50%" : end ? 0 : undefined,
+      left: vertical ? (bottom ? 0 : undefined) : "50%",
+      right: vertical ? (!bottom ? 0 : undefined) : "50%",
+      bottom: !vertical && !bottom ? 0 : vertical ? "50%" : undefined,
+      top: vertical ? "50%" : bottom ? 0 : undefined,
       opacity: !disabled && enabled && realignable ? 1 : 0,
       pointerEvents: !disabled && enabled && realignable ? "auto" : "none",
       transition: "all 0.5s ease-in-out",
     }),
-    [vertical, end, disabled, enabled, realignable]
+    [vertical, bottom, disabled, enabled, realignable]
   );
 
   // Rebuilds the GridItem children to receive their parent GridArea's 'end' and 'vertical' values.
@@ -100,11 +102,11 @@ export default function GridArea({
     () =>
       React.Children.map(children, (child) =>
         React.cloneElement(child as React.ReactElement<any>, {
-          end,
+          bottom,
           vertical,
         })
       ),
-    [children, end, vertical]
+    [children, bottom, vertical]
   );
 
   return enableDrop ? (
@@ -121,7 +123,8 @@ export default function GridArea({
             className,
             "area",
             stretch && "stretch",
-            end && "end",
+            middle && "middle",
+            bottom && "bottom",
             align === "centered"
               ? "just-centered"
               : align === "end"

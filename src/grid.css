@@ -38,11 +38,6 @@
   flex: auto;
 }
 
-.middle {
-  flex-grow: 0;
-  flex: auto;
-}
-
 .just-centered {
   justify-content: center;
 }
@@ -51,8 +46,12 @@
   justify-content: flex-end;
 }
 
-.end {
-  align-items:flex-end;
+.middle {
+  align-items: center;
+}
+
+.bottom {
+  align-items: flex-end;
 }
 
 .hide {

@@ -52,7 +52,7 @@ export default function GridItem({
   ...props
 }: ItemProps) {
   const { vertical } = props as {
-    end?: boolean;
+    startBottom?: boolean;
     vertical?: boolean;
   };
   const { editing, isDragging, onExtend } = useAlignContext();
