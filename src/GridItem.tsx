@@ -95,7 +95,6 @@ export default function GridItem({
           }}>
           <div
             style={{
-              display: "inline-block",
               position: "relative",
               minHeight: isHovered && !disabled ? "35px" : undefined,
               width: !vertical && extended ? "100%" : undefined,
