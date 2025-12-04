@@ -8,8 +8,11 @@ import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
   plugins: [
-    svgr(),
+    svgr({
+      include: "**/*.svg",
+    }),
     react(),
+    cssInjectedByJsPlugin(),
     dts({
       rollupTypes: true,
     }),
@@ -21,7 +24,6 @@ export default defineConfig({
       entry: "src/index.ts",
     },
     rollupOptions: {
-      plugins: [cssInjectedByJsPlugin()],
       external: ["react", "react-beautiful-dnd"],
       output: {
         globals: {

@@ -1,14 +1,14 @@
-import { ReactComponent as AlignCenter } from "./Icons/alignCenter.svg";
-import { ReactComponent as AlignCenterV } from "./Icons/alignCenterV.svg";
-import { ReactComponent as AlignEnd } from "./Icons/alignEnd.svg";
-import { ReactComponent as AlignEndV } from "./Icons/alignEndV.svg";
-import { ReactComponent as AlignStart } from "./Icons/alignStart.svg";
-import { ReactComponent as AlignStartV } from "./Icons/alignStartV.svg";
-import { ReactComponent as HorizontalExtend } from "./Icons/horizontalExtend.svg";
-import { ReactComponent as HorizontalNormal } from "./Icons/horizontalNormal.svg";
-import { ReactComponent as MoveArrows } from "./Icons/moveArrows.svg";
-import { ReactComponent as VerticalExtend } from "./Icons/verticalExtend.svg";
-import { ReactComponent as VerticalNormal } from "./Icons/verticalNormal.svg";
+import AlignCenter from "./Icons/alignCenter.svg?react";
+import AlignCenterV from "./Icons/alignCenterV.svg?react";
+import AlignEnd from "./Icons/alignEnd.svg?react";
+import AlignEndV from "./Icons/alignEndV.svg?react";
+import AlignStart from "./Icons/alignStart.svg?react";
+import AlignStartV from "./Icons/alignStartV.svg?react";
+import HorizontalExtend from "./Icons/horizontalExtend.svg?react";
+import HorizontalNormal from "./Icons/horizontalNormal.svg?react";
+import MoveArrows from "./Icons/moveArrows.svg?react";
+import VerticalExtend from "./Icons/verticalExtend.svg?react";
+import VerticalNormal from "./Icons/verticalNormal.svg?react";
 
 export default {
   horizontalExtend: HorizontalExtend,
