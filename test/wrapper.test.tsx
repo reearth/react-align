@@ -1,12 +1,9 @@
-// TO DO: TESTS
+import { describe, it } from 'vitest';
 
-// import React from 'react';
-// import * as ReactDOM from 'react-dom';
-// import GridWrapper from '../src/Grid/GridWrapper';
-
-// describe('GridWrapper', () => {
-//   it('renders without crashing', () => {
-//     const div = document.createElement('div');
-//     ReactDOM.render(<GridWrapper />, div);
-//   });
-// });
+describe('GridWrapper', () => {
+  it.todo('should render without crashing');
+  it.todo('should handle drag and drop operations');
+  it.todo('should call onMove callback when items are moved');
+  it.todo('should call onAlignChange callback when alignment changes');
+  it.todo('should call onExtend callback when items are extended');
+});
