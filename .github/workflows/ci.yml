@@ -40,30 +40,6 @@ jobs:
       - name: Build package
         run: yarn build
 
-      - name: Check for security vulnerabilities
-        run: yarn audit --level moderate
-        continue-on-error: true
-
-  build-example:
-    name: Build Example
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-          cache: 'yarn'
-
-      - name: Install root dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Build main package
-        run: yarn build
-
       - name: Install example dependencies
         working-directory: ./example
         run: yarn install --frozen-lockfile
@@ -71,3 +47,7 @@ jobs:
       - name: Build example
         working-directory: ./example
         run: yarn build
+
+      - name: Check for security vulnerabilities
+        run: yarn audit --level moderate
+        continue-on-error: true
