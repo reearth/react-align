@@ -61,6 +61,9 @@ jobs:
       - name: Install root dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Build main package
+        run: yarn build
+
       - name: Install example dependencies
         working-directory: ./example
         run: yarn install --frozen-lockfile
