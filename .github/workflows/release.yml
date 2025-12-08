@@ -18,6 +18,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    # Ensure this workflow only runs from the main branch
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout repository
