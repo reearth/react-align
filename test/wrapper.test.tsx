@@ -1,9 +1,10 @@
-import { describe, it, expect, vi } from "vitest";
 import { render } from "@testing-library/react";
-import GridWrapper from "../src/GridWrapper";
-import GridSection from "../src/GridSection";
+import { describe, it, expect, vi } from "vitest";
+
 import GridArea from "../src/GridArea";
 import GridItem from "../src/GridItem";
+import GridSection from "../src/GridSection";
+import GridWrapper from "../src/GridWrapper";
 
 describe("GridWrapper", () => {
   it("should render without crashing", () => {
