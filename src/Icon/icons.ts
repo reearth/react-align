@@ -1,14 +1,14 @@
-import AlignCenter from "./Icons/alignCenter.svg?react";
-import AlignCenterV from "./Icons/alignCenterV.svg?react";
-import AlignEnd from "./Icons/alignEnd.svg?react";
-import AlignEndV from "./Icons/alignEndV.svg?react";
-import AlignStart from "./Icons/alignStart.svg?react";
-import AlignStartV from "./Icons/alignStartV.svg?react";
-import HorizontalExtend from "./Icons/horizontalExtend.svg?react";
-import HorizontalNormal from "./Icons/horizontalNormal.svg?react";
-import MoveArrows from "./Icons/moveArrows.svg?react";
-import VerticalExtend from "./Icons/verticalExtend.svg?react";
-import VerticalNormal from "./Icons/verticalNormal.svg?react";
+import AlignCenter from "./Icons/alignCenter.svg";
+import AlignCenterV from "./Icons/alignCenterV.svg";
+import AlignEnd from "./Icons/alignEnd.svg";
+import AlignEndV from "./Icons/alignEndV.svg";
+import AlignStart from "./Icons/alignStart.svg";
+import AlignStartV from "./Icons/alignStartV.svg";
+import HorizontalExtend from "./Icons/horizontalExtend.svg";
+import HorizontalNormal from "./Icons/horizontalNormal.svg";
+import MoveArrows from "./Icons/moveArrows.svg";
+import VerticalExtend from "./Icons/verticalExtend.svg";
+import VerticalNormal from "./Icons/verticalNormal.svg";
 
 export default {
   horizontalExtend: HorizontalExtend,
