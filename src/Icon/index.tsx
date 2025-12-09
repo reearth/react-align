@@ -11,7 +11,9 @@ export type IconProps = {
 };
 
 const Icon: React.FC<IconProps> = ({ className, name, onClick }) => {
-  const LocalIconComponent = Icons[name as IconKeys];
+  const LocalIconComponent = Icons[name as IconKeys] as unknown as React.FC<
+    React.SVGProps<SVGSVGElement>
+  >;
   return <LocalIconComponent className={className} onClick={onClick} />;
 };
 
