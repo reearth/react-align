@@ -101,7 +101,7 @@ export default function GridArea({
   const childrenWithParentProps = useMemo(
     () =>
       Children.map(children, child =>
-        cloneElement(child as ReactElement<any>, {
+        cloneElement(child as ReactElement<{ bottom?: boolean; vertical?: boolean }>, {
           bottom,
           vertical,
         }),
