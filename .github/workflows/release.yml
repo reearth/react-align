@@ -67,15 +67,53 @@ jobs:
             COMMIT_RANGE=$LATEST_TAG..HEAD
           fi
 
-          # Generate changelog
-          CHANGELOG=$(git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --no-merges)
+          # Generate categorized changelog
+          FEATURES=$(git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --no-merges --grep="^feat" || echo "")
+          FIXES=$(git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --no-merges --grep="^fix" || echo "")
+          CHORE=$(git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --no-merges --grep="^chore" || echo "")
+          DOCS=$(git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --no-merges --grep="^docs" || echo "")
+          OTHER=$(git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --no-merges --invert-grep --grep="^feat\|^fix\|^chore\|^docs" || echo "")
 
-          # Save to file for PR body
+          # Build changelog with sections
           cat > /tmp/changelog.md <<EOF
           ## Changes in v${{ steps.bump_version.outputs.new_version }}
 
-          $CHANGELOG
           EOF
+
+          if [ -n "$FEATURES" ]; then
+            echo "### ✨ Features" >> /tmp/changelog.md
+            echo "" >> /tmp/changelog.md
+            echo "$FEATURES" >> /tmp/changelog.md
+            echo "" >> /tmp/changelog.md
+          fi
+
+          if [ -n "$FIXES" ]; then
+            echo "### 🐛 Bug Fixes" >> /tmp/changelog.md
+            echo "" >> /tmp/changelog.md
+            echo "$FIXES" >> /tmp/changelog.md
+            echo "" >> /tmp/changelog.md
+          fi
+
+          if [ -n "$CHORE" ]; then
+            echo "### 🔧 Chore" >> /tmp/changelog.md
+            echo "" >> /tmp/changelog.md
+            echo "$CHORE" >> /tmp/changelog.md
+            echo "" >> /tmp/changelog.md
+          fi
+
+          if [ -n "$DOCS" ]; then
+            echo "### 📚 Documentation" >> /tmp/changelog.md
+            echo "" >> /tmp/changelog.md
+            echo "$DOCS" >> /tmp/changelog.md
+            echo "" >> /tmp/changelog.md
+          fi
+
+          if [ -n "$OTHER" ]; then
+            echo "### 🔨 Other Changes" >> /tmp/changelog.md
+            echo "" >> /tmp/changelog.md
+            echo "$OTHER" >> /tmp/changelog.md
+            echo "" >> /tmp/changelog.md
+          fi
 
           # Output for use in PR
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
