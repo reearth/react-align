@@ -1,6 +1,6 @@
 {
   "name": "react-align",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "author": "KaWaite",
   "license": "MIT",
   "main": "./dist/react-align.umd.js",
