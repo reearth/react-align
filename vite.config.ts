@@ -8,8 +8,17 @@ import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
   plugins: [
-    svgr(),
+    svgr({
+      include: "**/*.svg",
+      svgrOptions: {
+        exportType: "default",
+        ref: true,
+        svgo: false,
+        titleProp: true,
+      },
+    }),
     react(),
+    cssInjectedByJsPlugin(),
     dts({
       rollupTypes: true,
     }),
@@ -21,12 +30,19 @@ export default defineConfig({
       entry: "src/index.ts",
     },
     rollupOptions: {
-      plugins: [cssInjectedByJsPlugin()],
-      external: ["react", "react-beautiful-dnd"],
+      external: ["react", "react-dom", "react-beautiful-dnd"],
       output: {
         globals: {
           react: "React",
+          "react-dom": "ReactDOM",
           "react-beautiful-dnd": "ReactBeautifulDnd",
+        },
+        assetFileNames: (assetInfo) => {
+          // Prevent SVG files from being treated as assets
+          if (assetInfo.name && assetInfo.name.endsWith('.svg')) {
+            return '[name][extname]';
+          }
+          return 'assets/[name]-[hash][extname]';
         },
       },
     },
