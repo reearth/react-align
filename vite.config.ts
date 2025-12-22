@@ -30,12 +30,12 @@ export default defineConfig({
       entry: "src/index.ts",
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react-beautiful-dnd"],
+      external: ["react", "react-dom", "@hello-pangea/dnd"],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
-          "react-beautiful-dnd": "ReactBeautifulDnd",
+          "@hello-pangea/dnd": "HelloPangeaDnd",
         },
         assetFileNames: (assetInfo) => {
           // Prevent SVG files from being treated as assets

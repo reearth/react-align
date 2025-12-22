@@ -10,7 +10,7 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-align": "link:..",
-    "react-beautiful-dnd": "^13.1.1",
+    "@hello-pangea/dnd": "^18.0.1",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
