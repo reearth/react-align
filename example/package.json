@@ -8,14 +8,14 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
+    "react": "^19.2.3",
     "react-align": "link:..",
     "@hello-pangea/dnd": "^18.0.1",
-    "react-dom": "^18.2.0"
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^2.1.0",
     "typescript": "^4.8.4",
     "vite": "^3.2.1"
