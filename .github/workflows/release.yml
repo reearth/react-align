@@ -130,21 +130,27 @@ jobs:
             echo "" >> CHANGELOG.md
           fi
 
-          # Prepare new entry
-          cat > /tmp/new_entry.md <<EOF
+          # Check if this version already exists in the changelog
+          if grep -q "## \[v${{ steps.bump_version.outputs.new_version }}\]" CHANGELOG.md; then
+            echo "Version v${{ steps.bump_version.outputs.new_version }} already exists in CHANGELOG.md, skipping update"
+          else
+            # Prepare new entry
+            cat > /tmp/new_entry.md <<EOF
           ## [v${{ steps.bump_version.outputs.new_version }}] - $(date +%Y-%m-%d)
 
           EOF
 
-          cat /tmp/changelog.md | tail -n +3 >> /tmp/new_entry.md
-          echo "" >> /tmp/new_entry.md
+            cat /tmp/changelog.md | tail -n +3 >> /tmp/new_entry.md
+            echo "" >> /tmp/new_entry.md
 
-          # Insert after the header
-          sed -i '1,/^All notable/r /tmp/new_entry.md' CHANGELOG.md || {
-            # If sed fails (no header found), just prepend
-            cat /tmp/new_entry.md CHANGELOG.md > /tmp/new_changelog.md
-            mv /tmp/new_changelog.md CHANGELOG.md
-          }
+            # Insert after the header
+            sed -i '1,/^All notable/r /tmp/new_entry.md' CHANGELOG.md || {
+              # If sed fails (no header found), just prepend
+              cat /tmp/new_entry.md CHANGELOG.md > /tmp/new_changelog.md
+              mv /tmp/new_changelog.md CHANGELOG.md
+            }
+            echo "Added v${{ steps.bump_version.outputs.new_version }} to CHANGELOG.md"
+          fi
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
