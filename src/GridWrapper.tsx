@@ -1,5 +1,5 @@
+import { DragDropContext, DropResult, ResponderProvided } from "@hello-pangea/dnd";
 import { CSSProperties, ReactNode, useCallback, useState } from "react";
-import { DragDropContext, DropResult, ResponderProvided } from "react-beautiful-dnd";
 
 import { Context } from "./context";
 import { Alignment } from "./GridArea";

@@ -15,7 +15,7 @@ yarn install
 yarn dev
 ```
 
-## Known Issues
+## Drag and Drop
 
-- `react-beautiful-dnd` is deprecated and may have compatibility warnings with React 18
-- The library continues to work but you may see console warnings about `defaultProps`
+- Uses `@hello-pangea/dnd` (a maintained fork of the deprecated `react-beautiful-dnd`)
+- Fully compatible with React 18 and future React versions

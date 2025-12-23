@@ -1,5 +1,5 @@
+import { Draggable } from "@hello-pangea/dnd";
 import { useMemo, CSSProperties, useState, useCallback, ReactNode } from "react";
-import { Draggable } from "react-beautiful-dnd";
 
 import { useAlignContext } from "./context";
 import Icon from "./Icon";
