@@ -1,6 +1,27 @@
 # Changelog
+## [v2.3.1] - 2026-01-30
+
+### 🔧 Chore
+
+- chore: update dependencies and GitHub Actions to latest versions (456df59)
+
+
+
+## [v2.3.1] - 2026-01-30
+
+### 🔧 Chore
+
+- chore: update dependencies and GitHub Actions to latest versions (456df59)
+
 
 All notable changes to this project will be documented in this file.
+## [v2.3.1] - 2026-01-30
+
+### 🔧 Chore
+
+- chore: update dependencies and GitHub Actions to latest versions (456df59)
+
+
 
 ## [v2.3.0] - 2025-12-23
 
