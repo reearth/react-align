@@ -1,6 +1,12 @@
-# Changelog
-
 All notable changes to this project will be documented in this file.
+
+## [v2.3.2] - 2026-05-14
+
+### 🔧 Chore
+
+- chore: modernize release pipeline with OIDC trusted publishing (0217ab8)
+
+
 
 ## [v2.3.1] - 2026-01-30
 
