@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: react-align
+  namespace: reearth
+  description: An all-in-one alignment and drag 'n drop system for React
+  annotations:
+    github.com/project-slug: reearth/react-align
+  links:
+  - url: https://github.com/reearth/react-align
+    title: GitHub
+    icon: github
+  tags:
+  - typescript
+spec:
+  type: service
+  lifecycle: production
+  owner: reearth/lib
