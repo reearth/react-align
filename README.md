@@ -17,9 +17,14 @@ A highly customizable and powerful drag 'n drop align system for React.
 
 ### Getting started
 
-```
-npm install react-align
-yarn add react-align
+react-align relies on [`@hello-pangea/dnd`](https://github.com/hello-pangea/dnd) as a peer dependency, so install it alongside react-align (`react` and `react-dom` are also peers):
+
+```bash
+# npm
+npm install react-align @hello-pangea/dnd
+
+# yarn
+yarn add react-align @hello-pangea/dnd
 ```
 
 ## Basic use
@@ -30,7 +35,7 @@ yarn add react-align
   <GridWrapper
     onMove={(id: string, destAreaId: string, destIndex: number, prevAreaId: string, prevIndex: number) => { /* ... */ }}
     onExtend={(id: string, extended: boolean) => { /* ... */ }}
-    onAlignmentChange={(areaId: string, alignment: Alignment) => { /* ... */ }>
+    onAlignChange={(areaId: string, alignment: Alignment) => { /* ... */ }}>
     <GridSection>
       <GridArea id="area1">
         <GridItem id="1234" index={1}>
