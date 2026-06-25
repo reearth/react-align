@@ -17,7 +17,7 @@ A highly customizable and powerful drag 'n drop align system for React.
 
 ### Getting started
 
-react-align relies on [`@hello-pangea/dnd`](https://github.com/hello-pangea/dnd) as a peer dependency, so install it alongside react-align (`react` and `react-dom` are also peers):
+react-align relies on [`@hello-pangea/dnd`](https://github.com/hello-pangea/dnd) as a peer dependency (alongside `react`), so install it alongside react-align:
 
 ```bash
 # npm
