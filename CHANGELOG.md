@@ -1,5 +1,14 @@
 All notable changes to this project will be documented in this file.
 
+## [v2.3.3] - 2026-06-25
+
+### 🔧 Chore
+
+- chore: update dev and CI dependencies to latest (#23) (78cbb1f)
+- chore: add Backstage catalog-info.yaml (ef02312)
+
+
+
 ## [v2.3.2] - 2026-05-14
 
 ### 🔧 Chore
