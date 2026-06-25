@@ -20,7 +20,10 @@ export default defineConfig({
     react(),
     cssInjectedByJsPlugin(),
     dts({
-      rollupTypes: true,
+      // vite-plugin-dts v5 (unplugin-dts) renamed `rollupTypes` to
+      // `bundleTypes`; it bundles all .d.ts into a single file via
+      // @microsoft/api-extractor.
+      bundleTypes: true,
     }),
   ],
   build: {
